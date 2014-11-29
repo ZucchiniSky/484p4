@@ -3,6 +3,8 @@
 
 #include "heapfile.h"
 #include "index.h"
+#include <unordered_map>
+#include <vector>
 
 //
 // Prototypes for query layer functions
@@ -38,6 +40,57 @@ public:
                      const attrInfo* attr1,          // Left attr in the join predicate
                      const Operator op,              // Predicate operator
                      const attrInfo* attr2);         // Right attr in the join predicate
+
+    static Status parseRelation(const string& relname, // target relation
+            int& attrCount, // number of attributes in relation
+            AttrDesc *&attrs, // attr desc list for relation
+            unordered_map<char*, int> &attrMap, // map from attribute name to index in attrs
+            vector<int> &indexedAttrs, // list of attrs that are indexed
+            int &size) // size of tuple
+    {
+        Status status = attrCat->getRelInfo(relname, attrCount, attrs);
+        if (status != OK) return status;
+
+        for (int i = 0; i < attrCount; i++)
+        {
+            AttrDesc *currAttr = attrs + i;
+            if (currAttr->indexed)
+            {
+                indexedAttrs.push_back(i);
+            }
+            int currSize = currAttr->.attrOffset + currAttr->attrLen;
+            if (currSize > size)
+            {
+                size = currSize;
+            }
+            attrMap[currAttr->attrName] = i;
+        }
+
+        return OK;
+    }
+
+    static Status parseRelation(const string& relname, // target relation
+            int& attrCount, // number of attributes in relation
+            AttrDesc *&attrs, // attr desc list for relation
+            unordered_map<char*, int> &attrMap, // map from attribute name to index in attrs
+            int &size) // size of tuple
+    {
+        Status status = attrCat->getRelInfo(relname, attrCount, attrs);
+        if (status != OK) return status;
+
+        for (int i = 0; i < attrCount; i++)
+        {
+            AttrDesc *currAttr = attrs + i;
+            int currSize = currAttr->.attrOffset + currAttr->attrLen;
+            if (currSize > size)
+            {
+                size = currSize;
+            }
+            attrMap[currAttr->attrName] = i;
+        }
+
+        return OK;
+    }
 
 
 private: 

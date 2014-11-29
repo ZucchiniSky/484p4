@@ -24,8 +24,75 @@ Status Operators::Join(const string& result,           // Name of the output rel
     	               const attrInfo* attr2)          // Right attr in the join predicate
 {
     /* Your solution goes here */
+    Status s;
 
-	return OK;
+    int reclen = 0;
+    for (int i = 0; i < projCnt; i++)
+    {
+        reclen += projNames[i].attrLen;
+    }
+
+    int rel1AttrCount;
+    AttrDesc *attrs1;
+
+    unordered_map<char*, int> attrMap1;
+
+    int size1;
+
+    int rel2AttrCount;
+    AttrDesc *attrs2;
+
+    unordered_map<char*, int> attrMap2;
+
+    int size2;
+
+    s = Operators::parseRelation(attr1->relName, rel1AttrCount, attrs1, attrMap1, size1);
+    if (s != OK) return s;
+
+    s = Operators::parseRelation(attr2->relName, rel2AttrCount, attrs2, attrMap2, size2);
+    if (s != OK) return s;
+
+    AttrDesc proj[projCnt];
+    AttrDesc *targetAttr1;
+    AttrDesc *targetAttr2;
+
+    for (int i = 0; i < projCnt; i++)
+    {
+        if (attrMap1.find(projNames[i].attrName) == attrMap1.end())
+        {
+            if (attrMap2.find(projNames[i].attrName) == attrMap2.end())
+            {
+                return ATTRNOTFOUND;
+            }
+            proj[i] = attrs2[attrMap[projNames[i].attrName]];
+        }
+        proj[i] = attrs1[attrMap[projNames[i].attrName]];
+    }
+
+    if (attrMap1.find(attr1->attrName) == attrMap1.end())
+    {
+        return ATTRNOTFOUND;
+    }
+    targetAttr1 = attrs1[attrMap1[attr1->attrName]];
+
+    if (attrMap2.find(attr2->attrName) == attrMap2.end())
+    {
+        return ATTRNOTFOUND;
+    }
+    targetAttr2 = attrs2[attrMap2[attr2->attrName]];
+
+    if (op != EQ)
+    {
+        return SNL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
+    }
+
+    if (targetAttr1->indexed || targetAttr2->indexed)
+    {
+        return INL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
+    } else
+    {
+        return SMJ(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
+    }
 }
 
 // Function to compare two record based on the predicate. Returns 0 if the two attributes 

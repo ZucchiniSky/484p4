@@ -17,6 +17,7 @@ Status Operators::Select(const string & result,      // name of the output relat
 		         const Operator op,         // predicate operation
 		         const void *attrValue)     // literal value in the predicate
 {
+    /* Your solution goes here */
     Status s;
 
     int reclen = 0;
@@ -27,40 +28,33 @@ Status Operators::Select(const string & result,      // name of the output relat
 
     int relAttrCount;
     AttrDesc *attrs;
-    s = attrCat->getRelInfo(attr->relName, relAttrCount, attrs);
 
-    unordered_map<char*, int> attrMap = new unordered_map<char*, int>();
+    unordered_map<char*, int> attrMap;
 
-    for (int i = 0; i < relAttrCount; i++)
-    {
-        AttrDesc *currAttr = attrs + i;
-        int currSize = currAttr->.attrOffset + currAttr->attrLen;
-        if (currSize > size)
-        {
-            size = currSize;
-        }
-        attrMap[currAttr->attrName] = i;
-    }
+    int size;
+
+    s = Operators::parseRelation(attr->relName, relAttrCount, attrs, attrMap, size);
+    if (s != OK) return s;
 
     AttrDesc proj[projCnt];
     AttrDesc *targetAttr;
 
     for (int i = 0; i < projCnt; i++)
     {
-        proj[i] = attrs[attrMap[projNames[i].attrName]];
-        if (proj[i] == nullptr)
+        if (attrMap.find(projNames[i].attrName) == attrMap.end())
         {
             return ATTRNOTFOUND;
         }
+        proj[i] = attrs[attrMap[projNames[i].attrName]];
     }
 
     if (attr != nullptr)
     {
-        targetAttr = attrs[attrMap[attr->attrName]];
-        if (targetAttr == nullptr)
+        if (attrMap.find(attr->attrName) == attrMap.end())
         {
             return ATTRNOTFOUND;
         }
+        targetAttr = attrs[attrMap[attr->attrName]];
     }
 
     if (attr != nullptr && targetAttr.indexed && op == EQ)

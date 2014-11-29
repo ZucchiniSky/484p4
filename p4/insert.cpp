@@ -18,31 +18,18 @@ Status Updates::Insert(const string& relation,      // Name of the relation
 {
     /* Your solution goes here */
 
+    Status status;
+
     int relAttrCount;
     AttrDesc *attrDesc;
 
-    Status status = attrCat->getRelInfo(relation, relAttrCount, attrDesc);
-    if (status != OK) return status;
-
-    vector<int> indexAttrs = new vector<int>();
-    unordered_map<char*, int> attrMap = new unordered_map<char*, int>();
+    vector<int> indexAttrs;
+    unordered_map<char*, int> attrMap;
 
     int size = 0;
 
-    for (int i = 0; i < relAttrCount; i++)
-    {
-        AttrDesc *currAttr = attrDesc + i;
-        if (currAttr->indexed)
-        {
-            indexAttrs.push_back(i);
-        }
-        int currSize = currAttr->.attrOffset + currAttr->attrLen;
-        if (currSize > size)
-        {
-            size = currSize;
-        }
-        attrMap[currAttr->attrName] = i;
-    }
+    status = Operators::parseRelation(relation, relAttrCount, attrDesc, attrMap, indexAttrs, size);
+    if (status != OK) return status;
 
     void *data = new(size);
 

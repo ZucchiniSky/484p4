@@ -21,28 +21,13 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    s = attrCat->getRelInfo(result, resultAttrCount, resultAttrDesc);
-    if (s != OK) return s;
-
-    vector<int> indexAttrs = new vector<int>();
-    unordered_map<char*, int> attrMap = new unordered_map<char*, int>();
+    vector<int> indexAttrs;
+    unordered_map<char*, int> attrMap;
 
     int size = 0;
 
-    for (int i = 0; i < resultAttrCount; i++)
-    {
-        AttrDesc *currAttr = resultAttrDesc + i;
-        if (currAttr->indexed)
-        {
-            indexAttrs.push_back(i);
-        }
-        int currSize = currAttr->.attrOffset + currAttr->attrLen;
-        if (currSize > size)
-        {
-            size = currSize;
-        }
-        attrMap[currAttr->attrName] = i;
-    }
+    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, indexAttrs, size);
+    if (s != OK) return s;
 
     RID nextRID;
     Record nextRecord;
@@ -50,12 +35,12 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     HeapFileScan fromFile(attrDesc->relName, s);
     if (s != OK) return s;
 
+    s = index.startScan(attrValue);
+    if (s != OK) return s;
+
     while ((s = index.scanNext(nextRID)) != FILEEOF)
     {
-        if (s != OK)
-        {
-            return s;
-        }
+        if (s != OK) return s;
 
         fromFile.getRandomRecord(nextRID, nextRecord);
 
@@ -77,6 +62,8 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;
     }
+
+    index.endScan();
 
     return OK;
 }
