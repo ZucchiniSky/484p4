@@ -29,16 +29,18 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     s = attrCat->getRelInfo(result, resultAttrCount, resultAttrDesc);
     if (s != OK) return s;
 
-    vector<int> indexAttrs;
     unordered_map<char*, int> attrMap;
 
     int size = 0;
 
-    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, indexAttrs, size);
+    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
     RID nextRID;
     Record nextRecord;
+
+    s = heapFile.startScan(0, 0, INTEGER, nullptr, NOTSET);
+    if (s != OK) return s;
 
     while ((s = heapFile.scanNext(nextRID, nextRecord)) != FILEEOF)
     {
@@ -64,6 +66,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         RID rid;
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;
+
+        delete data;
     }
 
     heapFile.endScan();

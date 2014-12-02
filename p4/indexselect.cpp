@@ -21,12 +21,11 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    vector<int> indexAttrs;
     unordered_map<char*, int> attrMap;
 
     int size = 0;
 
-    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, indexAttrs, size);
+    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
     RID nextRID;
@@ -61,6 +60,8 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
         RID rid;
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;
+
+        delete data;
     }
 
     index.endScan();
