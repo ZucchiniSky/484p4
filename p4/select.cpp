@@ -43,7 +43,7 @@ Status Operators::Select(const string & result,      // name of the output relat
     if (s != OK) return s;
 
     AttrDesc proj[projCnt];
-    AttrDesc *targetAttr;
+    AttrDesc *targetAttr = NULL;
 
     cout << "after parseRelation" << endl;
 
@@ -66,6 +66,7 @@ Status Operators::Select(const string & result,      // name of the output relat
         {
             return ATTRNOTFOUND;
         }
+        cout << "targetAttr set" << endl;
         targetAttr = &attrs[attrMap[const_cast<char*>(attr->attrName)]];
     }
 
