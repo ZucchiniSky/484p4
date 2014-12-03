@@ -12,7 +12,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
                               const void* attrValue,      // Pointer to the literal value in the predicate
                               const int reclen)           // Length of a tuple in the output relation
 {
-    cout << "Algorithm: File Scan" << endl;
+    cout << "Algorithm: Index Scan" << endl;
 
     /* Your solution goes here */
 
@@ -40,11 +40,12 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     s = index.startScan(attrValue);
     if (s != OK) return s;
 
-    while ((s = index.scanNext(nextRID)) != FILEEOF)
+    while ((s = index.scanNext(nextRID)) != ENDOFINDEXSCAN)
     {
         if (s != OK) return s;
 
-        fromFile.getRandomRecord(nextRID, nextRecord);
+        s = fromFile.getRandomRecord(nextRID, nextRecord);
+        if (s != OK) return s;
 
         char *data = new char[size];
 

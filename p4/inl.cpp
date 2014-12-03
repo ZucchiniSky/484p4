@@ -77,7 +77,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
         s = index->startScan(filter);
         if (s != OK) return s;
 
-        while ((s = index->scanNext(secondRID)) != FILEEOF)
+        while ((s = index->scanNext(secondRID)) != ENDOFINDEXSCAN)
         {
             if (s != OK) {
                 return s;

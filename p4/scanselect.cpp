@@ -20,8 +20,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     /* Your solution goes here */
 
-    cout << "scan selecting" << endl;
-
     Status s;
 
     HeapFileScan *heapFile;
@@ -35,8 +33,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     }
     if (s != OK) return s;
 
-    cout << "after declaring heapfilescan" << endl;
-
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
@@ -47,8 +43,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
-    cout << "after parseRelation" << endl;
-
     RID nextRID;
     Record nextRecord;
 
@@ -57,13 +51,9 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
     } else
     {
-        cout << "starting unfiltered scan" << endl;
         s = heapFile->startScan(0, 0, INTEGER, NULL, op);
-        cout << "just started unfiltered scan" << endl;
     }
     if (s != OK) return s;
-
-    cout << "after starting scan" << endl;
 
     while ((s = heapFile->scanNext(nextRID, nextRecord)) != FILEEOF)
     {
@@ -72,8 +62,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
             return s;
         }
 
-        cout << "found a match" << endl;
-
         char *data = new char[size];
 
         for (int i = 0; i < projCnt; i++)
@@ -81,7 +69,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
             AttrDesc currAttr = resultAttrDesc[i];
             memcpy(data + currAttr.attrOffset, (char*) nextRecord.data + projNames[i].attrOffset, currAttr.attrLen);
         }
-        cout << "after memcpy" << endl;
 
         Record record;
         record.data = data;
@@ -94,14 +81,10 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         if (s != OK) return s;
 
         delete data;
-
-        cout << "after insert" << endl;
     }
 
     s = heapFile->endScan();
     if (s != OK) return s;
-
-    cout << "after endscan" << endl;
 
     return OK;
 }
