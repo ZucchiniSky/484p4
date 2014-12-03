@@ -59,7 +59,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    map<char*, int> attrMap;
+    map<char*, int, Operators::strCmpFunctor> attrMap;
 
     int size = 0;
 

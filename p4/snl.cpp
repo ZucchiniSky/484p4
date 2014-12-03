@@ -27,7 +27,7 @@ Status Operators::SNL(const string& result,           // Output relation name
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    map<char*, int, strCmpFunctor> attrMap;
+    map<char*, int, Operators::strCmpFunctor> attrMap;
 
     int size = 0;
 

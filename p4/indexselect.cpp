@@ -24,7 +24,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    map<char*, int, strCmpFunctor> attrMap;
+    map<char*, int, Operators::strCmpFunctor> attrMap;
 
     int size = 0;
 

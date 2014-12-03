@@ -48,7 +48,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    map<char*, int> attrMap;
+    map<char*, int, Operators::strCmpFunctor> attrMap;
 
     int size = 0;
 

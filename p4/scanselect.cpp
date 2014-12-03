@@ -40,7 +40,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    map<char*, int, strCmpFunctor> attrMap;
+    map<char*, int, Operators::strCmpFunctor> attrMap;
 
     int size = 0;
 
