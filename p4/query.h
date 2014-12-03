@@ -3,6 +3,7 @@
 
 #include "heapfile.h"
 #include "index.h"
+#include "catalog.h"
 #include <map>
 #include <vector>
 #include <string.h>
@@ -65,6 +66,7 @@ public:
                 size = currSize;
             }
             attrMap[currAttr->attrName] = i;
+            cout << "added " << currAttr->attrName << " to map with id " << i << endl;
         }
 
         return OK;
@@ -88,6 +90,7 @@ public:
                 size = currSize;
             }
             attrMap[currAttr->attrName] = i;
+            cout << "added " << currAttr->attrName << " to map with id " << i << endl;
         }
 
         return OK;

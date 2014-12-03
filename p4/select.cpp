@@ -51,6 +51,7 @@ Status Operators::Select(const string & result,      // name of the output relat
     {
         if (attrMap.find(const_cast<char*>(projNames[i].attrName)) == attrMap.end())
         {
+            cout << "couldn't find attr " << projNames[i].attrName << endl;
             return ATTRNOTFOUND;
         }
         proj[i] = attrs[attrMap[const_cast<char*>(projNames[i].attrName)]];
