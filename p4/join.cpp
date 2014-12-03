@@ -59,30 +59,30 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     for (int i = 0; i < projCnt; i++)
     {
-        if (attrMap1.find(projNames[i].attrName) == attrMap1.end())
+        if (attrMap1.find(const_cast<char*>(projNames[i].attrName)) == attrMap1.end())
         {
-            if (attrMap2.find(projNames[i].attrName) == attrMap2.end())
+            if (attrMap2.find(const_cast<char*>(projNames[i].attrName)) == attrMap2.end())
             {
                 return ATTRNOTFOUND;
             }
-            proj[i] = attrs2[attrMap2[projNames[i].attrName]];
+            proj[i] = attrs2[attrMap2[const_cast<char*>(projNames[i].attrName)]];
         } else
         {
-            proj[i] = attrs1[attrMap1[projNames[i].attrName]];
+            proj[i] = attrs1[attrMap1[const_cast<char*>(projNames[i].attrName)]];
         }
     }
 
-    if (attrMap1.find(attr1->attrName) == attrMap1.end())
+    if (attrMap1.find(const_cast<char*>(attr1->attrName)) == attrMap1.end())
     {
         return ATTRNOTFOUND;
     }
-    targetAttr1 = attrs1[attrMap1[attr1->attrName]];
+    targetAttr1 = attrs1[attrMap1[const_cast<char*>(attr1->attrName)]];
 
-    if (attrMap2.find(attr2->attrName) == attrMap2.end())
+    if (attrMap2.find(const_cast<char*>(attr2->attrName)) == attrMap2.end())
     {
         return ATTRNOTFOUND;
     }
-    targetAttr2 = attrs2[attrMap2[attr2->attrName]];
+    targetAttr2 = attrs2[attrMap2[const_cast<char*>(attr2->attrName)]];
 
     if (op != EQ)
     {
@@ -91,10 +91,10 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     if (targetAttr1->indexed || targetAttr2->indexed)
     {
-        return INL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
+        return INL(result, projCnt, proj, *targetAttr1, op, *targetAttr2, reclen);
     } else
     {
-        return SMJ(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
+        return SMJ(result, projCnt, proj, *targetAttr1, op, *targetAttr2, reclen);
     }
 }
 
