@@ -3,6 +3,7 @@
 #include "index.h"
 #include <vector>
 #include <map>
+#include <string>
 
 /*
  * Inserts a record into the specified relation
@@ -31,7 +32,7 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     status = Operators::parseRelation(relation, relAttrCount, attrDesc, attrMap, indexAttrs, size);
     if (status != OK) return status;
 
-    void *data = new(size);
+    char *data = new char[size];
 
     for (int i = 0; i < attrCnt; i++)
     {
@@ -48,10 +49,10 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     RID rid;
     status = heapFile.insertRecord(record, rid);
     if (status != OK) return status;
-    for (int i = 0; i < indexAttrs.size; i++)
+    for (int i = 0; i < indexAttrs.size(); i++)
     {
         AttrDesc currAttr = attrDesc[indexAttrs.at(i)];
-        Index index(relation, currAttr.attrOffset, currAttr.attrLen, currAttr.attrType, 0, status);
+        Index index(relation, currAttr.attrOffset, currAttr.attrLen, static_cast<Datatype>(currAttr.attrType), 0, status);
         if (status != OK) return status;
         s = index.insertEntry(record.data + currAttr.attrOffset, rid);
         if (status != OK) return status;
