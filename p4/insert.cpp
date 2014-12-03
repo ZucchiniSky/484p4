@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string.h>
+#include <utility.h>
 
 /*
  * Inserts a record into the specified relation
@@ -61,6 +62,9 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         status = index.insertEntry(static_cast<char*>(record.data) + currAttr.attrOffset, rid);
         if (status != OK) return status;
     }
+
+    s = Utilities::Print(relation);
+    if (s != OK) return s;
 
     delete data;
 
