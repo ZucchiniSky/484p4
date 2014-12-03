@@ -29,7 +29,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
 
     if (attrDesc1.indexed)
     {
-        index = new Index(attrDesc1->relName, attrDesc1->attrOffset, attrDesc1->attrLen, attrDesc1->attrType, 0, s);
+        index = new Index(attrDesc1.relName, attrDesc1.attrOffset, attrDesc1.attrLen, attrDesc1.attrType, 0, s);
         if (s != OK) return s;
         indexHeapFile = new HeapFileScan(attrDesc1.attrName, s);
         if (s != OK) return s;
@@ -37,7 +37,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
         if (s != OK) return s;
     } else
     {
-        index = new Index(attrDesc2->relName, attrDesc2->attrOffset, attrDesc2->attrLen, attrDesc2->attrType, 0, s);
+        index = new Index(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, attrDesc2.attrType, 0, s);
         if (s != OK) return s;
         indexHeapFile = new HeapFileScan(attrDesc2.attrName, s);
         if (s != OK) return s;
