@@ -98,15 +98,15 @@ public:
         {
             case INTEGER:
                 filter = new char[sizeof(int)];
-                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, sizeof(int));
+                memcpy(&filter, (char *) record.data + desc.attrOffset, sizeof(int));
                 break;
             case DOUBLE:
                 filter = new char[sizeof(double)];
-                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, sizeof(double));
+                memcpy(&filter, (char *) record.data + desc.attrOffset, sizeof(double));
                 break;
             case STRING:
                 filter = new char[attrDesc1.attrLen];
-                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, attrDesc1.attrLen);
+                memcpy(&filter, (char *) record.data + desc.attrOffset, desc.attrLen);
                 break;
         }
         return OK;
