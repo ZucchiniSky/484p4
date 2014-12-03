@@ -50,22 +50,8 @@ Status Operators::SNL(const string& result,           // Output relation name
         }
 
         char *filter;
-
-        switch(attrDesc1.attrType)
-        {
-            case INTEGER:
-                filter = new char[sizeof(int)];
-                memcpy(&filter, (char *) firstRecord.data + attrDesc1.attrOffset, sizeof(int));
-                break;
-            case DOUBLE:
-                filter = new char[sizeof(double)];
-                memcpy(&filter, (char *) firstRecord.data + attrDesc1.attrOffset, sizeof(double));
-                break;
-            case STRING:
-                filter = new char[attrDesc1.attrLen];
-                memcpy(&filter, (char *) firstRecord.data + attrDesc1.attrOffset, sizeof(attrDesc1.attrLen));
-                break;
-        }
+        s = parseFilter(attrDesc1, filter, firstRecord);
+        if (s != OK) return s;
 
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), filter, op);
         if (s != OK) return s;
@@ -103,13 +89,15 @@ Status Operators::SNL(const string& result,           // Output relation name
             delete data;
         }
 
-        rel2.endScan();
+        s = rel2.endScan();
+        if (s != OK) return s;
 
         delete filter;
 
     }
 
-    rel1.endScan();
+    s = rel1.endScan();
+    if (s != OK) return s;
 
     return OK;
 }

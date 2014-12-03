@@ -72,7 +72,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         delete data;
     }
 
-    heapFile.endScan();
+    s = heapFile.endScan();
+    if (s != OK) return s;
 
     return OK;
 }

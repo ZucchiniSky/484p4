@@ -67,7 +67,8 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
         delete data;
     }
 
-    index.endScan();
+    s = index.endScan();
+    if (s != OK) return s;
 
     return OK;
 }

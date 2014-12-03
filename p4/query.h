@@ -92,6 +92,26 @@ public:
         return OK;
     }
 
+    static Status parseFilter(AttrDesc desc, char *&filter, Record record)
+    {
+        switch(desc.attrType)
+        {
+            case INTEGER:
+                filter = new char[sizeof(int)];
+                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, sizeof(int));
+                break;
+            case DOUBLE:
+                filter = new char[sizeof(double)];
+                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, sizeof(double));
+                break;
+            case STRING:
+                filter = new char[attrDesc1.attrLen];
+                memcpy(&filter, (char *) firstRecord.data + desc.attrOffset, attrDesc1.attrLen);
+                break;
+        }
+        return OK;
+    }
+
 
 private: 
 
