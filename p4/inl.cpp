@@ -2,6 +2,7 @@
 #include "query.h"
 #include "sort.h"
 #include "index.h"
+#include <map>
 
 /* 
  * Indexed nested loop evaluates joins with an index on the 
@@ -47,7 +48,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    unordered_map<char*, int> attrMap;
+    map<char*, int> attrMap;
 
     int size = 0;
 

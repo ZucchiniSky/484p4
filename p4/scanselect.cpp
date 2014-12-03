@@ -1,6 +1,7 @@
 #include "catalog.h"
 #include "query.h"
 #include "index.h"
+#include <map>
 
 /* 
  * A simple scan select using a heap file scan
@@ -29,7 +30,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     s = attrCat->getRelInfo(result, resultAttrCount, resultAttrDesc);
     if (s != OK) return s;
 
-    unordered_map<char*, int> attrMap;
+    map<char*, int> attrMap;
 
     int size = 0;
 

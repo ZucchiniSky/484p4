@@ -2,6 +2,7 @@
 #include "query.h"
 #include "sort.h"
 #include "index.h"
+#include <map>
 
 /* Consider using Operators::matchRec() defined in join.cpp
  * to compare records when joining the relations */
@@ -54,6 +55,16 @@ Status Operators::SMJ(const string& result,           // Output relation name
         }
     }
 
+    int resultAttrCount;
+    AttrDesc *resultAttrDesc;
+
+    map<char*, int> attrMap;
+
+    int size = 0;
+
+    s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
+    if (s != OK) return s;
+
     SortedFile rel1(attrDesc1.attrName, attrDesc1.attrOffset, attrDesc1.attrLen, attrDesc1.attrType, availableMemory / size1, s);
     if (s != OK) return s;
     SortedFile rel2(attrDesc2.attrName, attrDesc2.attrOffset, attrDesc2.attrLen, attrDesc2.attrType, availableMemory / size2, s);
@@ -88,7 +99,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
             for (int i = 0; i < projCnt; i++)
             {
-                AttrDesc currAttr = resultAttrDesc[attrMap[projNames[i].attrName]];
+                AttrDesc currAttr = resultAttrDesc[attrMap[attrDescArray[i].attrName]];
                 memcpy(data + currAttr.attrOffset, nextRecord.data, currAttr.attrLen);
             }
 

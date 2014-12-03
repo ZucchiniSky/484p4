@@ -1,6 +1,8 @@
 #include "catalog.h"
 #include "query.h"
 #include "index.h"
+#include <map>
+
 Status Operators::IndexSelect(const string& result,       // Name of the output relation
                               const int projCnt,          // Number of attributes in the projection
                               const AttrDesc projNames[], // Projection list (as AttrDesc)
@@ -21,7 +23,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
-    unordered_map<char*, int> attrMap;
+    map<char*, int> attrMap;
 
     int size = 0;
 

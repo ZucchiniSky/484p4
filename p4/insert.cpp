@@ -2,7 +2,7 @@
 #include "query.h"
 #include "index.h"
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 /*
  * Inserts a record into the specified relation
@@ -24,7 +24,7 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     AttrDesc *attrDesc;
 
     vector<int> indexAttrs;
-    unordered_map<char*, int> attrMap;
+    map<char*, int> attrMap;
 
     int size = 0;
 

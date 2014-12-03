@@ -3,7 +3,7 @@
 
 #include "heapfile.h"
 #include "index.h"
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 //
@@ -44,7 +44,7 @@ public:
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
-            unordered_map<char*, int> &attrMap, // map from attribute name to index in attrs
+            map<char*, int> &attrMap, // map from attribute name to index in attrs
             vector<int> &indexedAttrs, // list of attrs that are indexed
             int &size) // size of tuple
     {
@@ -72,7 +72,7 @@ public:
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
-            unordered_map<char*, int> &attrMap, // map from attribute name to index in attrs
+            map<char*, int> &attrMap, // map from attribute name to index in attrs
             int &size) // size of tuple
     {
         Status status = attrCat->getRelInfo(relname, attrCount, attrs);
