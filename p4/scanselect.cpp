@@ -78,7 +78,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
         for (int i = 0; i < projCnt; i++)
         {
-            AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
+            AttrDesc currAttr = resultAttrDesc[i];
             memcpy(data + currAttr.attrOffset, (char*) nextRecord.data + projNames[i].attrOffset, currAttr.attrLen);
         }
         cout << "after memcpy" << endl;
