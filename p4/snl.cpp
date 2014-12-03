@@ -43,6 +43,9 @@ Status Operators::SNL(const string& result,           // Output relation name
     s = rel1.startScan(0, 0, INTEGER, NULL, NOTSET);
     if (s != OK) return s;
 
+    HeapFile resultFile(result, s);
+    if (s != OK) return s;
+
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
         if (s != OK) {
@@ -79,9 +82,6 @@ Status Operators::SNL(const string& result,           // Output relation name
             Record record;
             record.data = data;
             record.length = size;
-
-            HeapFile resultFile(result, s);
-            if (s != OK) return s;
             RID rid;
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;

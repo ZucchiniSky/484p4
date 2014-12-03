@@ -40,6 +40,9 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     s = index.startScan(attrValue);
     if (s != OK) return s;
 
+    HeapFile resultFile(result, s);
+    if (s != OK) return s;
+
     while ((s = index.scanNext(nextRID)) != NOMORERECS)
     {
         if (s != OK) return s;
@@ -58,9 +61,6 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
         Record record;
         record.data = data;
         record.length = size;
-
-        HeapFile resultFile(result, s);
-        if (s != OK) return s;
         RID rid;
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;

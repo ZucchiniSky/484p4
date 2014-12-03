@@ -55,6 +55,9 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     }
     if (s != OK) return s;
 
+    HeapFile resultFile(result, s);
+    if (s != OK) return s;
+
     while ((s = heapFile->scanNext(nextRID, nextRecord)) != FILEEOF)
     {
         if (s != OK)
@@ -73,9 +76,6 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         Record record;
         record.data = data;
         record.length = size;
-
-        HeapFile resultFile(result, s);
-        if (s != OK) return s;
         RID rid;
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;

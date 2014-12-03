@@ -73,6 +73,9 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
     Record firstRecord, secondRecord;
 
+    HeapFile resultFile(result, s);
+    if (s != OK) return s;
+
     while ((s = rel1.next(firstRecord)) != FILEEOF)
     {
         if (s != OK) {
@@ -114,9 +117,6 @@ Status Operators::SMJ(const string& result,           // Output relation name
             Record record;
             record.data = data;
             record.length = size;
-
-            HeapFile resultFile(result, s);
-            if (s != OK) return s;
             RID rid;
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;

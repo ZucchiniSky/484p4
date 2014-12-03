@@ -64,6 +64,9 @@ Status Operators::INL(const string& result,           // Name of the output rela
     s = heapFile->startScan(0, 0, INTEGER, NULL, NOTSET);
     if (s != OK) return s;
 
+    HeapFile resultFile(result, s);
+    if (s != OK) return s;
+
     while ((s = heapFile->scanNext(firstRID, firstRecord)) != FILEEOF)
     {
         if (s != OK) {
@@ -105,9 +108,6 @@ Status Operators::INL(const string& result,           // Name of the output rela
             Record record;
             record.data = data;
             record.length = size;
-
-            HeapFile resultFile(result, s);
-            if (s != OK) return s;
             RID rid;
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;
