@@ -50,7 +50,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
 
         for (int i = 0; i < projCnt; i++)
         {
-            AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
+            AttrDesc currAttr = resultAttrDesc[i];
             memcpy(data + currAttr.attrOffset, static_cast<char*>(nextRecord.data) + projNames[i].attrOffset, currAttr.attrLen);
         }
 

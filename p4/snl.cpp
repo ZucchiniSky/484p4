@@ -66,7 +66,7 @@ Status Operators::SNL(const string& result,           // Output relation name
 
             for (int i = 0; i < projCnt; i++)
             {
-                AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(attrDescArray[i].attrName)]];
+                AttrDesc currAttr = resultAttrDesc[i];
                 if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
                 {
                     memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
