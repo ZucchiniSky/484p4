@@ -54,8 +54,8 @@ Status Operators::Join(const string& result,           // Name of the output rel
     if (s != OK) return s;
 
     AttrDesc proj[projCnt];
-    AttrDesc *targetAttr1;
-    AttrDesc *targetAttr2;
+    AttrDesc targetAttr1;
+    AttrDesc targetAttr2;
 
     for (int i = 0; i < projCnt; i++)
     {
@@ -91,10 +91,10 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     if (targetAttr1->indexed || targetAttr2->indexed)
     {
-        return INL(result, projCnt, proj, *targetAttr1, op, *targetAttr2, reclen);
+        return INL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
     } else
     {
-        return SMJ(result, projCnt, proj, *targetAttr1, op, *targetAttr2, reclen);
+        return SMJ(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
     }
 }
 
