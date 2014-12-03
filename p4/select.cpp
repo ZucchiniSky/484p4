@@ -1,7 +1,7 @@
 #include "catalog.h"
 #include "query.h"
 #include "index.h"
-#include <unordered_map>
+#include <map>
 
 /*
  * Selects records from the specified relation.
@@ -29,7 +29,7 @@ Status Operators::Select(const string & result,      // name of the output relat
     int relAttrCount;
     AttrDesc *attrs;
 
-    unordered_map<char*, int> attrMap;
+    map<char*, int> attrMap;
 
     int size;
 
@@ -48,7 +48,7 @@ Status Operators::Select(const string & result,      // name of the output relat
         proj[i] = attrs[attrMap[projNames[i].attrName]];
     }
 
-    if (attr != nullptr)
+    if (attr != NULL)
     {
         if (attrMap.find(attr->attrName) == attrMap.end())
         {
@@ -57,7 +57,7 @@ Status Operators::Select(const string & result,      // name of the output relat
         targetAttr = attrs[attrMap[attr->attrName]];
     }
 
-    if (attr != nullptr && targetAttr.indexed && op == EQ)
+    if (attr != NULL && targetAttr->indexed && op == EQ)
     {
         return IndexSelect(result, projCnt, proj, targetAttr, op, attrValue, reclen);
     } else
