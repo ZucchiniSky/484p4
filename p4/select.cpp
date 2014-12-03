@@ -33,7 +33,7 @@ Status Operators::Select(const string & result,      // name of the output relat
 
     int size;
 
-    s = Operators::parseRelation(attr->relName, relAttrCount, attrs, attrMap, size);
+    s = Operators::parseRelation(projNames[0].relName, relAttrCount, attrs, attrMap, size);
     if (s != OK) return s;
 
     AttrDesc proj[projCnt];
