@@ -51,7 +51,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
         for (int i = 0; i < projCnt; i++)
         {
             AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
-            memcpy(data + currAttr.attrOffset, nextRecord.data + projNames[i].attrOffset, currAttr.attrLen);
+            memcpy(data + currAttr.attrOffset, static_cast<char*>(nextRecord.data) + projNames[i].attrOffset, currAttr.attrLen);
         }
 
         Record record;
