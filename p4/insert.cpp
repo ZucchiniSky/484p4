@@ -66,7 +66,5 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     s = Utilities::Print(relation);
     if (s != OK) return s;
 
-    delete data;
-
     return OK;
 }

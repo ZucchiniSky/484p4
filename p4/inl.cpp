@@ -111,8 +111,6 @@ Status Operators::INL(const string& result,           // Name of the output rela
             RID rid;
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;
-
-            delete data;
         }
 
         s = index->endScan();
