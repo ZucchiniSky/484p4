@@ -2,6 +2,7 @@
 #include "query.h"
 #include "index.h"
 #include <map>
+#include <string.h>
 
 Status Operators::IndexSelect(const string& result,       // Name of the output relation
                               const int projCnt,          // Number of attributes in the projection
@@ -17,7 +18,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
 
     Status s;
 
-    Index index(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, attrDesc->attrType, 0, s);
+    Index index(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), 0, s);
     if (s != OK) return s;
 
     int resultAttrCount;
@@ -45,11 +46,11 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
 
         fromFile.getRandomRecord(nextRID, nextRecord);
 
-        void *data = new(reclen);
+        char *data = new char[size];
 
         for (int i = 0; i < projCnt; i++)
         {
-            AttrDesc currAttr = resultAttrDesc[attrMap[projNames[i].attrName]];
+            AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
             memcpy(data + currAttr.attrOffset, nextRecord.data + projNames[i].attrOffset, currAttr.attrLen);
         }
 
