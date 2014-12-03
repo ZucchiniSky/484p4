@@ -44,7 +44,7 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     {
         if (s != OK)
         {
-            cout << "exiting index select with " << (s << endl;
+            cout << "exiting index select with " << s << endl;
             return s;
         }
 
