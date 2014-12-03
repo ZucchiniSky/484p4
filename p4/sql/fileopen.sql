@@ -17,7 +17,4 @@ INSERT INTO stars(starid, real_name, plays, soapid)
 INSERT INTO stars (real_name, soapid, starid, plays) 
 	VALUES ('Bonarrigo, Laura', 3, 101, 'Cassie');
 
--- run a few select queries
-SELECT stars.soapid, stars.real_name FROM stars;
-
 DROP TABLE stars;
