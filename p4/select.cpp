@@ -41,20 +41,20 @@ Status Operators::Select(const string & result,      // name of the output relat
 
     for (int i = 0; i < projCnt; i++)
     {
-        if (attrMap.find(projNames[i].attrName) == attrMap.end())
+        if (attrMap.find(const_cast<char*>(projNames[i].attrName)) == attrMap.end())
         {
             return ATTRNOTFOUND;
         }
-        proj[i] = attrs[attrMap[projNames[i].attrName]];
+        proj[i] = attrs[attrMap[const_cast<char*>(projNames[i].attrName)]];
     }
 
     if (attr != NULL)
     {
-        if (attrMap.find(attr->attrName) == attrMap.end())
+        if (attrMap.find(const_cast<char*>(attr->attrName)) == attrMap.end())
         {
             return ATTRNOTFOUND;
         }
-        targetAttr = attrs[attrMap[attr->attrName]];
+        targetAttr = attrs[attrMap[const_cast<char*>(attr->attrName)]];
     }
 
     if (attr != NULL && targetAttr->indexed && op == EQ)
