@@ -2,6 +2,7 @@
 #include "query.h"
 #include "index.h"
 #include <map>
+#include <string.h>
 
 /* 
  * A simple scan select using a heap file scan
@@ -21,7 +22,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     Status s;
 
-    HeapFileScan heapFile(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, attrDesc->attrType, attrValue, op, s);
+    HeapFileScan heapFile(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(attrValue), op, s);
     if (s != OK) return s;
 
     int resultAttrCount;
@@ -40,7 +41,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     RID nextRID;
     Record nextRecord;
 
-    s = heapFile.startScan(0, 0, INTEGER, nullptr, NOTSET);
+    s = heapFile.startScan(0, 0, INTEGER, NULL, NOTSET);
     if (s != OK) return s;
 
     while ((s = heapFile.scanNext(nextRID, nextRecord)) != FILEEOF)
@@ -50,11 +51,11 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
             return s;
         }
 
-        void *data = new(size);
+        char *data = new char[size];
 
         for (int i = 0; i < projCnt; i++)
         {
-            AttrDesc currAttr = resultAttrDesc[attrMap[projNames[i].attrName]];
+            AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
             memcpy(data + currAttr.attrOffset, nextRecord.data, currAttr.attrLen);
         }
 
