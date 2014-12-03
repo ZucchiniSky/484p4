@@ -41,7 +41,13 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     RID nextRID;
     Record nextRecord;
 
-    s = heapFile.startScan(0, 0, INTEGER, NULL, NOTSET);
+    if (attrDesc != NULL)
+    {
+        s = heapFile.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
+    } else
+    {
+        s = heapFile.startScan(0, 0, INTEGER, (char*) attrValue, op);
+    }
     if (s != OK) return s;
 
     while ((s = heapFile.scanNext(nextRID, nextRecord)) != FILEEOF)

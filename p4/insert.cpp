@@ -37,6 +37,10 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     for (int i = 0; i < attrCnt; i++)
     {
         AttrDesc currAttr = attrDesc[attrMap[const_cast<char*>(attrList[i].attrName)]];
+        if ((Datatype) attrList[i].attrType == STRING && strlen(attrList[i].attrValue) != attrList[i].attrLen)
+        {
+            return ATTRTOOLONG;
+        }
         memcpy(data + currAttr.attrOffset, attrList[i].attrValue, currAttr.attrLen);
     }
 
