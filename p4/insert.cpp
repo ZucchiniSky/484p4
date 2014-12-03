@@ -36,8 +36,7 @@ Status Updates::Insert(const string& relation,      // Name of the relation
 
     for (int i = 0; i < attrCnt; i++)
     {
-        char *name = attrList[i].attrName;
-        AttrDesc currAttr = attrDesc[attrMap[name]];
+        AttrDesc currAttr = attrDesc[const_cast<char*>(attrMap[name])];
         memcpy(data + currAttr.attrOffset, attrList[i].attrValue, currAttr.attrLen);
     }
 
@@ -58,6 +57,8 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         status = index.insertEntry(static_cast<char*>(record.data) + currAttr.attrOffset, rid);
         if (status != OK) return status;
     }
+
+    delete data;
 
     return OK;
 }
