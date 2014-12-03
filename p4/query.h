@@ -61,6 +61,8 @@ public:
         Status status = attrCat->getRelInfo(relname, attrCount, attrs);
         if (status != OK) return status;
 
+        size = 0;
+
         for (int i = 0; i < attrCount; i++)
         {
             AttrDesc *currAttr = attrs + i;
@@ -87,6 +89,8 @@ public:
     {
         Status status = attrCat->getRelInfo(relname, attrCount, attrs);
         if (status != OK) return status;
+
+        size = 0;
 
         for (int i = 0; i < attrCount; i++)
         {
