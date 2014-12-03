@@ -5,6 +5,7 @@
 #include "index.h"
 #include <map>
 #include <vector>
+#include <string.h>
 
 //
 // Prototypes for query layer functions
@@ -105,7 +106,7 @@ public:
                 memcpy(&filter, (char *) record.data + desc.attrOffset, sizeof(double));
                 break;
             case STRING:
-                filter = new char[attrDesc1.attrLen];
+                filter = new char[desc.attrLen];
                 memcpy(&filter, (char *) record.data + desc.attrOffset, desc.attrLen);
                 break;
         }
