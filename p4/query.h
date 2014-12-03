@@ -43,10 +43,18 @@ public:
                      const Operator op,              // Predicate operator
                      const attrInfo* attr2);         // Right attr in the join predicate
 
+    struct strCmpFunctor
+    {
+        bool operator()(char const *first, char const *second)
+        {
+            return strcmp(first, second) < 0;
+        }
+    };
+
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
-            map<char*, int> &attrMap, // map from attribute name to index in attrs
+            map<char*, int, strCmpFunctor> &attrMap, // map from attribute name to index in attrs
             vector<int> &indexedAttrs, // list of attrs that are indexed
             int &size) // size of tuple
     {
@@ -75,7 +83,7 @@ public:
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
-            map<char*, int> &attrMap, // map from attribute name to index in attrs
+            map<char*, int, strCmpFunctor> &attrMap, // map from attribute name to index in attrs
             int &size) // size of tuple
     {
         Status status = attrCat->getRelInfo(relname, attrCount, attrs);

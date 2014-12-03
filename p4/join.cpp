@@ -36,14 +36,14 @@ Status Operators::Join(const string& result,           // Name of the output rel
     int rel1AttrCount;
     AttrDesc *attrs1;
 
-    map<char*, int> attrMap1;
+    map<char*, int, strCmpFunctor> attrMap1;
 
     int size1;
 
     int rel2AttrCount;
     AttrDesc *attrs2;
 
-    map<char*, int> attrMap2;
+    map<char*, int, strCmpFunctor> attrMap2;
 
     int size2;
 

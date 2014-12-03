@@ -25,7 +25,7 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     AttrDesc *attrDesc;
 
     vector<int> indexAttrs;
-    map<char*, int> attrMap;
+    map<char*, int, strCmpFunctor> attrMap;
 
     int size = 0;
 

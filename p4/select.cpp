@@ -33,7 +33,7 @@ Status Operators::Select(const string & result,      // name of the output relat
     int relAttrCount;
     AttrDesc *attrs;
 
-    map<char*, int> attrMap;
+    map<char*, int, strCmpFunctor> attrMap;
 
     int size;
 
