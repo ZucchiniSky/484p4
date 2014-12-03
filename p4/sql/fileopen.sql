@@ -19,7 +19,4 @@ INSERT INTO stars (real_name, soapid, starid, plays)
 
 SELECT * FROM stars;
 
--- run a few select queries
-SELECT stars.soapid, stars.real_name FROM stars;
-
 DROP TABLE stars;
