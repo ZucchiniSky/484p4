@@ -89,7 +89,7 @@ Status Operators::Join(const string& result,           // Name of the output rel
         return SNL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
     }
 
-    if (targetAttr1->indexed || targetAttr2->indexed)
+    if (targetAttr1.indexed || targetAttr2.indexed)
     {
         return INL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);
     } else
