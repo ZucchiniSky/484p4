@@ -69,6 +69,9 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     s = index.endScan();
     if (s != OK) return s;
 
+    s = fromFile.endScan();
+    if (s != OK) return s;
+
     return OK;
 }
 
