@@ -22,12 +22,14 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     Status s;
 
+    HeapFileScan *heapFile;
+
     if (attrDesc != NULL && attrValue != NULL)
     {
-        HeapFileScan heapFile(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(const_cast<void*>(attrValue)), op, s);
+        heapFile = new HeapFileScan(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(const_cast<void*>(attrValue)), op, s);
     } else
     {
-        HeapFileScan heapFile(projNames[0].relName, s);
+        heapFile = new HeapFileScan(projNames[0].relName, s);
     }
     if (s != OK) return s;
 
@@ -49,14 +51,14 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     if (attrDesc != NULL)
     {
-        s = heapFile.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
+        s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
     } else
     {
-        s = heapFile.startScan(0, 0, INTEGER, (char*) attrValue, op);
+        s = heapFile->startScan(0, 0, INTEGER, (char*) attrValue, op);
     }
     if (s != OK) return s;
 
-    while ((s = heapFile.scanNext(nextRID, nextRecord)) != FILEEOF)
+    while ((s = heapFile->scanNext(nextRID, nextRecord)) != FILEEOF)
     {
         if (s != OK)
         {
@@ -84,7 +86,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         delete data;
     }
 
-    s = heapFile.endScan();
+    s = heapFile->endScan();
     if (s != OK) return s;
 
     return OK;
