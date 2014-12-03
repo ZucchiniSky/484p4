@@ -80,8 +80,8 @@ Status Operators::SNL(const string& result,           // Output relation name
 
             for (int i = 0; i < projCnt; i++)
             {
-                AttrDesc currAttr = resultAttrDesc[attrMap[static_cast<char*>(projNames[i].attrName)]];
-                memcpy(data + currAttr.attrOffset, static_cast<char*>(nextRecord.data), currAttr.attrLen);
+                AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(attrDescArray[i].attrName)]];
+                memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data), currAttr.attrLen);
             }
 
             Record record;
