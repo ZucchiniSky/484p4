@@ -20,7 +20,7 @@ Status Updates::Insert(const string& relation,      // Name of the relation
 {
     /* Your solution goes here */
 
-    Status status;
+    Status s;
 
     int relAttrCount;
     AttrDesc *attrDesc;
@@ -30,8 +30,8 @@ Status Updates::Insert(const string& relation,      // Name of the relation
 
     int size = 0;
 
-    status = Operators::parseRelation(relation, relAttrCount, attrDesc, attrMap, indexAttrs, size);
-    if (status != OK) return status;
+    s = Operators::parseRelation(relation, relAttrCount, attrDesc, attrMap, indexAttrs, size);
+    if (s != OK) return s;
 
     char *data = new char[size];
 
@@ -49,18 +49,18 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     record.data = data;
     record.length = size;
 
-    HeapFile heapFile(relation, status);
-    if (status != OK) return status;
+    HeapFile heapFile(relation, s);
+    if (s != OK) return s;
     RID rid;
-    status = heapFile.insertRecord(record, rid);
-    if (status != OK) return status;
+    s = heapFile.insertRecord(record, rid);
+    if (s != OK) return s;
     for (unsigned int i = 0; i < indexAttrs.size(); i++)
     {
         AttrDesc currAttr = attrDesc[indexAttrs.at(i)];
-        Index index(relation, currAttr.attrOffset, currAttr.attrLen, static_cast<Datatype>(currAttr.attrType), 0, status);
-        if (status != OK) return status;
-        status = index.insertEntry(static_cast<char*>(record.data) + currAttr.attrOffset, rid);
-        if (status != OK) return status;
+        Index index(relation, currAttr.attrOffset, currAttr.attrLen, static_cast<Datatype>(currAttr.attrType), 0, s);
+        if (s != OK) return s;
+        s = index.insertEntry(static_cast<char*>(record.data) + currAttr.attrOffset, rid);
+        if (s != OK) return s;
     }
 
     s = Utilities::Print(relation);
