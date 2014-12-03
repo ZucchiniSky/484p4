@@ -84,5 +84,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     s = heapFile->endScan();
     if (s != OK) return s;
 
+    delete heapFile;
+
     return OK;
 }
