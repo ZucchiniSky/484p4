@@ -22,7 +22,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     Status s;
 
-    HeapFileScan heapFile(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(attrValue), op, s);
+    HeapFileScan heapFile(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(const_cast<char*>(attrValue)), op, s);
     if (s != OK) return s;
 
     int resultAttrCount;
