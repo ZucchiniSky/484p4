@@ -58,7 +58,7 @@ public:
             {
                 indexedAttrs.push_back(i);
             }
-            int currSize = currAttr.attrOffset + currAttr->attrLen;
+            int currSize = currAttr->attrOffset + currAttr->attrLen;
             if (currSize > size)
             {
                 size = currSize;
@@ -81,7 +81,7 @@ public:
         for (int i = 0; i < attrCount; i++)
         {
             AttrDesc *currAttr = attrs + i;
-            int currSize = currAttr.attrOffset + currAttr->attrLen;
+            int currSize = currAttr->attrOffset + currAttr->attrLen;
             if (currSize > size)
             {
                 size = currSize;
