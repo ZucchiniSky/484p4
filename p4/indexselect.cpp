@@ -42,7 +42,11 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
 
     while ((s = index.scanNext(nextRID)) != ENDOFINDEXSCAN)
     {
-        if (s != OK) return s;
+        if (s != OK)
+        {
+            cout << "exiting index select with " << (s << endl;
+            return s;
+        }
 
         s = fromFile.getRandomRecord(nextRID, nextRecord);
         if (s != OK) return s;
