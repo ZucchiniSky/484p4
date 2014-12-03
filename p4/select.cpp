@@ -54,7 +54,7 @@ Status Operators::Select(const string & result,      // name of the output relat
         {
             return ATTRNOTFOUND;
         }
-        targetAttr = attrs[attrMap[const_cast<char*>(attr->attrName)]];
+        targetAttr = &attrs[attrMap[const_cast<char*>(attr->attrName)]];
     }
 
     if (attr != NULL && targetAttr->indexed && op == EQ)
