@@ -54,6 +54,14 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     if (attrDesc != NULL)
     {
+        char *filter;
+        if (attrValue == NULL)
+        {
+            filter = NULL;
+        } else
+        {
+            filter = (char*) attrValue;
+        }
         s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
     } else
     {
