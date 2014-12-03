@@ -74,7 +74,6 @@ public:
                 size = currSize;
             }
             attrMap[currAttr->attrName] = i;
-            cout << "added " << currAttr->attrName << " to map with id " << i << endl;
         }
 
         return OK;
@@ -98,7 +97,6 @@ public:
                 size = currSize;
             }
             attrMap[currAttr->attrName] = i;
-            cout << "added " << currAttr->attrName << " to map with id " << i << endl;
         }
 
         return OK;
