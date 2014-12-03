@@ -20,6 +20,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     /* Your solution goes here */
 
+    cout << "scan selecting" << endl;
+
     Status s;
 
     HeapFileScan *heapFile;
@@ -33,11 +35,10 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     }
     if (s != OK) return s;
 
+    cout << "after declaring heapfilescan" << endl;
+
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
-
-    s = attrCat->getRelInfo(result, resultAttrCount, resultAttrDesc);
-    if (s != OK) return s;
 
     map<char*, int> attrMap;
 
@@ -45,6 +46,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
+
+    cout << "after parseRelation" << endl;
 
     RID nextRID;
     Record nextRecord;
@@ -58,12 +61,16 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     }
     if (s != OK) return s;
 
+    cout << "after starting scan" << endl;
+
     while ((s = heapFile->scanNext(nextRID, nextRecord)) != FILEEOF)
     {
         if (s != OK)
         {
             return s;
         }
+
+        cout << "found a match" << endl;
 
         char *data = new char[size];
 
@@ -72,6 +79,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
             AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(projNames[i].attrName)]];
             memcpy(data + currAttr.attrOffset, nextRecord.data, currAttr.attrLen);
         }
+        cout << "after memcpy" << endl;
 
         Record record;
         record.data = data;
@@ -84,10 +92,14 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         if (s != OK) return s;
 
         delete data;
+
+        cout << "after insert" << endl;
     }
 
     s = heapFile->endScan();
     if (s != OK) return s;
+
+    cout << "after endscan" << endl;
 
     return OK;
 }

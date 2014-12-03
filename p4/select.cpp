@@ -20,11 +20,15 @@ Status Operators::Select(const string & result,      // name of the output relat
     /* Your solution goes here */
     Status s;
 
+    cout << "selecting" << endl;
+
     int reclen = 0;
     for (int i = 0; i < projCnt; i++)
     {
         reclen += projNames[i].attrLen;
     }
+
+    cout << "after reclen" << endl;
 
     int relAttrCount;
     AttrDesc *attrs;
@@ -33,11 +37,15 @@ Status Operators::Select(const string & result,      // name of the output relat
 
     int size;
 
+    cout << "before parseRelation" << endl;
+
     s = Operators::parseRelation(projNames[0].relName, relAttrCount, attrs, attrMap, size);
     if (s != OK) return s;
 
     AttrDesc proj[projCnt];
     AttrDesc *targetAttr;
+
+    cout << "after parseRelation" << endl;
 
     for (int i = 0; i < projCnt; i++)
     {
@@ -48,6 +56,8 @@ Status Operators::Select(const string & result,      // name of the output relat
         proj[i] = attrs[attrMap[const_cast<char*>(projNames[i].attrName)]];
     }
 
+    cout << "after populating proj" << endl;
+
     if (attr != NULL)
     {
         if (attrMap.find(const_cast<char*>(attr->attrName)) == attrMap.end())
@@ -56,6 +66,8 @@ Status Operators::Select(const string & result,      // name of the output relat
         }
         targetAttr = &attrs[attrMap[const_cast<char*>(attr->attrName)]];
     }
+
+    cout << "after populating targetAttr" << endl;
 
     if (attr != NULL && targetAttr->indexed && op == EQ)
     {
