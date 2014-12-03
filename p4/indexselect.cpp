@@ -40,13 +40,9 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     s = index.startScan(attrValue);
     if (s != OK) return s;
 
-    while ((s = index.scanNext(nextRID)) != ENDOFINDEXSCAN)
+    while ((s = index.scanNext(nextRID)) != NOMORERECS)
     {
-        if (s != OK)
-        {
-            cout << "exiting index select with " << s << endl;
-            return s;
-        }
+        if (s != OK) return s;
 
         s = fromFile.getRandomRecord(nextRID, nextRecord);
         if (s != OK) return s;
