@@ -61,6 +61,8 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         if (s != OK) return s;
         s = index.insertEntry(static_cast<char*>(record.data) + currAttr.attrOffset, rid);
         if (s != OK) return s;
+        s = index.endScan();
+        if (s != OK) return s;
     }
 
     s = Utilities::Print(relation);
