@@ -3,6 +3,7 @@
 #include "sort.h"
 #include "index.h"
 #include <map>
+#include <string.h>
 
 /* Consider using Operators::matchRec() defined in join.cpp
  * to compare records when joining the relations */
@@ -21,12 +22,12 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
     Status s;
 
-    int maxPages = BufMgr::numUnpinnedPages() * 4 / 5;
+    int maxPages = bufMgr->numUnpinnedPages() * 4 / 5;
 
     int availableMemory = maxPages * PAGESIZE;
 
     int attr1Count, attr2Count;
-    AttrDesc *attrs1;
+    AttrDesc *attrs1, *attrs2;
 
     s = attrCat->getRelInfo(attrDesc1.attrName, attr1Count, attrs1);
     if (s != OK) return s;
@@ -38,7 +39,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
     for (int i = 0; i < attr1Count; i++)
     {
         AttrDesc *currAttr = attrs1 + i;
-        int currSize = currAttr->.attrOffset + currAttr->attrLen;
+        int currSize = currAttr->attrOffset + currAttr->attrLen;
         if (currSize > size1)
         {
             size1 = currSize;
@@ -48,7 +49,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
     for (int i = 0; i < attr2Count; i++)
     {
         AttrDesc *currAttr = attrs2 + i;
-        int currSize = currAttr->.attrOffset + currAttr->attrLen;
+        int currSize = currAttr->attrOffset + currAttr->attrLen;
         if (currSize > size2)
         {
             size2 = currSize;
@@ -65,9 +66,9 @@ Status Operators::SMJ(const string& result,           // Output relation name
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
-    SortedFile rel1(attrDesc1.attrName, attrDesc1.attrOffset, attrDesc1.attrLen, attrDesc1.attrType, availableMemory / size1, s);
+    SortedFile rel1(attrDesc1.attrName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), availableMemory / size1, s);
     if (s != OK) return s;
-    SortedFile rel2(attrDesc2.attrName, attrDesc2.attrOffset, attrDesc2.attrLen, attrDesc2.attrType, availableMemory / size2, s);
+    SortedFile rel2(attrDesc2.attrName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), availableMemory / size2, s);
     if (s != OK) return s;
 
     Record firstRecord, secondRecord;
@@ -95,12 +96,19 @@ Status Operators::SMJ(const string& result,           // Output relation name
                 s = rel2.setMark();
                 if (s != OK) return s;
             }
-            void *data = new(size);
+
+            char *data = new char[size];
 
             for (int i = 0; i < projCnt; i++)
             {
-                AttrDesc currAttr = resultAttrDesc[attrMap[attrDescArray[i].attrName]];
-                memcpy(data + currAttr.attrOffset, nextRecord.data, currAttr.attrLen);
+                AttrDesc currAttr = resultAttrDesc[attrMap[const_cast<char*>(attrDescArray[i].attrName)]];
+                if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
+                {
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                } else
+                {
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                }
             }
 
             Record record;

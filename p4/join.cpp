@@ -65,9 +65,11 @@ Status Operators::Join(const string& result,           // Name of the output rel
             {
                 return ATTRNOTFOUND;
             }
-            proj[i] = attrs2[attrMap[projNames[i].attrName]];
+            proj[i] = attrs2[attrMap2[projNames[i].attrName]];
+        } else
+        {
+            proj[i] = attrs1[attrMap1[projNames[i].attrName]];
         }
-        proj[i] = attrs1[attrMap[projNames[i].attrName]];
     }
 
     if (attrMap1.find(attr1->attrName) == attrMap1.end())
