@@ -72,11 +72,18 @@ Status Operators::SMJ(const string& result,           // Output relation name
         s = rel2.next(secondRecord);
         if (s == FILEEOF) break;
         else if (s != OK) return s;
-        s = rel2.setMark();
-        if (s != OK) return s;
 
-        while (!matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2))
+        bool found = false;
+        int match;
+
+        while ((match = matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2)) <= 0)
         {
+            if (!found && match == 0)
+            {
+                found = true;
+                s = rel2.setMark();
+                if (s != OK) return s;
+            }
             void *data = new(size);
 
             for (int i = 0; i < projCnt; i++)
@@ -95,6 +102,16 @@ Status Operators::SMJ(const string& result,           // Output relation name
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;
             s = rel2.next(secondRecord);
+            if (s == FILEEOF)
+            {
+                break;
+            } else if (s != OK) return s;
+        }
+
+        if (!found)
+        {
+            s = rel2.setMark();
+            if (s != OK) return s;
         }
 
     }
