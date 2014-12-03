@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <string.h>
-#include <utility.h>
+#include "utility.h"
 
 /*
  * Inserts a record into the specified relation
