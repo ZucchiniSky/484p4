@@ -54,18 +54,12 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     if (attrDesc != NULL)
     {
-        char *filter;
-        if (attrValue == NULL)
-        {
-            filter = NULL;
-        } else
-        {
-            filter = (char*) attrValue;
-        }
-        s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, filter, op);
+        s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
     } else
     {
+        cout << "starting unfiltered scan" << endl;
         s = heapFile->startScan(0, 0, INTEGER, NULL, op);
+        cout << "just started unfiltered scan" << endl;
     }
     if (s != OK) return s;
 
