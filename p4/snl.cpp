@@ -93,15 +93,15 @@ Status Operators::SNL(const string& result,           // Output relation name
         }
 
         cout << "scanned2 =\t" << scanned2 << endl;
-        cout << "actual2 =\t" << rel2.getRecCnt();
+        cout << "actual2 =\t" << rel2.getRecCnt() << endl;
 
         s = rel2.endScan();
         if (s != OK) return s;
 
     }
-    
+
     cout << "scanned1 =\t" << scanned1 << endl;
-    cout << "actual1 =\t" << rel1.getRecCnt();
+    cout << "actual1 =\t" << rel1.getRecCnt() << endl;
 
     s = rel1.endScan();
     if (s != OK) return s;
