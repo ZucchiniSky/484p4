@@ -19,9 +19,9 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     Status s;
 
-    HeapFileScan rel1(attrDesc1.relName, s);
+    HeapFileScan rel2(attrDesc1.relName, s);
     if (s != OK) return s;
-    HeapFileScan rel2(attrDesc2.relName, s);
+    HeapFileScan rel1(attrDesc2.relName, s);
     if (s != OK) return s;
 
     cout << "created heapfilescans" << endl;
@@ -94,16 +94,10 @@ Status Operators::SNL(const string& result,           // Output relation name
             if (s != OK) return s;
         }
 
-        cout << "scanned2 =\t" << scanned2 << endl;
-        cout << "actual2 =\t" << rel2.getRecCnt() << endl;
-
         s = rel2.endScan();
         if (s != OK) return s;
 
     }
-
-    cout << "scanned1 =\t" << scanned1 << endl;
-    cout << "actual1 =\t" << rel1.getRecCnt() << endl;
 
     s = rel1.endScan();
     if (s != OK) return s;
