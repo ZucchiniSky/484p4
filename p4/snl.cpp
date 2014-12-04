@@ -62,6 +62,8 @@ Status Operators::SNL(const string& result,           // Output relation name
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
         if (s != OK) return s;
 
+        scanned2 = 0;
+
         while ((s = rel2.scanNext(secondRID, secondRecord)) != FILEEOF)
         {
             if (s != OK) {
