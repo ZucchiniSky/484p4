@@ -32,6 +32,11 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     s = Operators::parseRelation(relation, relAttrCount, attrDesc, attrMap, indexAttrs, size);
     if (s != OK) return s;
 
+    if (relAttrCount != attrCnt)
+    {
+        return ATTRNOTFOUND;
+    }
+
     char *data = new char[size];
 
     for (int i = 0; i < attrCnt; i++)
@@ -40,6 +45,10 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         if ((Datatype) attrList[i].attrType == STRING && strlen((char*) attrList[i].attrValue) > (unsigned int) attrList[i].attrLen)
         {
             return ATTRTOOLONG;
+        }
+        if (attrList[i].attrValue == NULL)
+        {
+            return ATTRNOTFOUND;
         }
         memcpy(data + currAttr.attrOffset, attrList[i].attrValue, currAttr.attrLen);
     }

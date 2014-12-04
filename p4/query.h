@@ -51,6 +51,8 @@ public:
         }
     };
 
+    // Fetch the AttrDesc list, attribute count, a map from AttrNames to index in AttrDesc,
+    // a list of the attributes that are indexed, and the size of a tuple for a specified relation
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
@@ -81,6 +83,8 @@ public:
         return OK;
     }
 
+    // Fetch the AttrDesc list, attribute count, a map from AttrNames to index in AttrDesc,
+    // and the size of a tuple for a specified relation
     static Status parseRelation(const string& relname, // target relation
             int& attrCount, // number of attributes in relation
             AttrDesc *&attrs, // attr desc list for relation
@@ -106,6 +110,7 @@ public:
         return OK;
     }
 
+    // Finds the size of a tuple in the specified relation
     static Status grabRelationSize(const string& relname, // target relation
             int &size) // size of tuple
     {
