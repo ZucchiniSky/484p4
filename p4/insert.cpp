@@ -40,6 +40,10 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     char *data = new char[size];
 
     bool *accessed = new bool[attrCnt];
+    for (int i = 0; i < attrCnt; i++)
+    {
+        accessed[i] = 0;
+    }
 
     for (int i = 0; i < attrCnt; i++)
     {
