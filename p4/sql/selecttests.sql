@@ -1,14 +1,14 @@
-CREATE TABLE table (a integer);
+CREATE TABLE first (a integer);
 
-INSERT INTO table (a) values (1);
-INSERT INTO table (a) values (2);
-INSERT INTO table (a) values (3);
-INSERT INTO table (a) values (4);
-INSERT INTO table (a) values (5);
+INSERT INTO first (a) values (1);
+INSERT INTO first (a) values (2);
+INSERT INTO first (a) values (3);
+INSERT INTO first (a) values (4);
+INSERT INTO first (a) values (5);
 
-SELECT table.a FROM table WHERE table.a > 3;
-SELECT table.a FROM table WHERE table.a < 3;
-SELECT table.a FROM table WHERE table.a >= 3;
-SELECT table.a FROM table WHERE table.a <= 3;
+SELECT first.a FROM first WHERE first.a > 3;
+SELECT first.a FROM first WHERE first.a < 3;
+SELECT first.a FROM first WHERE first.a >= 3;
+SELECT first.a FROM first WHERE first.a <= 3;
 
 DROP TABLE table;
