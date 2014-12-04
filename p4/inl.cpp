@@ -92,12 +92,12 @@ Status Operators::INL(const string& result,           // Name of the output rela
             for (int i = 0; i < projCnt; i++)
             {
                 AttrDesc currAttr = resultAttrDesc[i];
-                if (strcmp(currAttr.relName, attrDesc1.relName))
+                if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
                 {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + currAttr.attrOffset, currAttr.attrLen);
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 } else
                 {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + currAttr.attrOffset, currAttr.attrLen);
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 }
             }
 
