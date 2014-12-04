@@ -79,6 +79,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         RID rid;
         s = resultFile.insertRecord(record, rid);
         if (s != OK) return s;
+
+        delete data;
     }
 
     s = heapFile->endScan();
