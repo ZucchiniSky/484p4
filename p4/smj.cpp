@@ -23,11 +23,13 @@ Status Operators::SMJ(const string& result,           // Output relation name
     Status s;
 
     int availableMemory = bufMgr->numUnpinnedPages() * 4 * PAGESIZE / 5;
+    // memory available for sorting without thrashing
 
     int size1 = 0, size2 = 0;
 
-    s = grabRelationSize(attrDesc1.relName, size1);
-    s = grabRelationSize(attrDesc2.relName, size2);
+    s = grabTupleSize(attrDesc1.relName, size1);
+    s = grabTupleSize(attrDesc2.relName, size2);
+    // need to know tuple size
 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
@@ -43,6 +45,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
     if (s != OK) return s;
     SortedFile rel2(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), availableMemory / size2, s);
     if (s != OK) return s;
+    // sort the relations
 
     Record firstRecord, secondRecord;
 
@@ -51,6 +54,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
     HeapFile resultFile(result, s);
     if (s != OK) return s;
 
+    // begin scanning
     while ((s = rel1.next(firstRecord)) != FILEEOF)
     {
         if (s != OK) {
@@ -59,6 +63,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
         if (!first)
         {
+            // if mark is not set yet, it defaults to the end of the file which causes an instant fileeof
             s = rel2.gotoMark();
         }
         if (s != OK) return s;
@@ -71,6 +76,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
         while ((match = matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2)) >= 0)
         {
+            // keep scanning until we've passed all the records that could possibly match
             if (match == 0)
             {
                 if (!found)
@@ -78,8 +84,10 @@ Status Operators::SMJ(const string& result,           // Output relation name
                     found = true;
                     s = rel2.setMark();
                     if (s != OK) return s;
+                    // set mark to the first match so that duplicates are handled correctly
                 }
 
+                // add tuple
                 char *data = new char[size];
 
                 for (int i = 0; i < projCnt; i++)
@@ -106,12 +114,14 @@ Status Operators::SMJ(const string& result,           // Output relation name
             {
                 break;
             } else if (s != OK) return s;
+            // scan next
         }
 
         if (!found)
         {
             s = rel2.setMark();
             if (s != OK) return s;
+            // advance mark if no matches are found
         }
 
         first = false;

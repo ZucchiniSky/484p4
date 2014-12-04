@@ -22,7 +22,7 @@ Status Operators::Select(const string & result,      // name of the output relat
 
     int reclen = 0;
 
-    s = grabRelationSize(result, reclen);
+    s = grabTupleSize(result, reclen);
 
     int relAttrCount;
     AttrDesc *attrs;
@@ -45,6 +45,7 @@ Status Operators::Select(const string & result,      // name of the output relat
         }
         proj[i] = attrs[attrMap[const_cast<char*>(projNames[i].attrName)]];
     }
+    // find the correct attrDesc for each attribute in the projection
 
     if (attr != NULL)
     {
@@ -54,7 +55,9 @@ Status Operators::Select(const string & result,      // name of the output relat
         }
         targetAttr = &attrs[attrMap[const_cast<char*>(attr->attrName)]];
     }
+    // find the attrDesc for the target attribute
 
+    // choose the correct algorithm
     if (attr != NULL && targetAttr->indexed && op == EQ)
     {
         return IndexSelect(result, projCnt, proj, targetAttr, op, attrValue, reclen);

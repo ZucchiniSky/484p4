@@ -27,6 +27,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
     HeapFileScan *heapFile;
     HeapFileScan *indexHeapFile;
 
+    // choose correct indexed attribute
     if (attrDesc1.indexed)
     {
         index = new Index(attrDesc1.relName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), 0, s);
@@ -63,6 +64,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
 
     s = heapFile->startScan(0, 0, INTEGER, NULL, NOTSET);
     if (s != OK) return s;
+    // begin unfiltered scan
 
     HeapFile resultFile(result, s);
     if (s != OK) return s;
@@ -75,6 +77,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
 
         s = index->startScan((char*)firstRecord.data + attrDesc1.attrOffset);
         if (s != OK) return s;
+        // begin index scan filtered by the current outer record
 
         while ((s = index->scanNext(secondRID)) != NOMORERECS)
         {
@@ -86,6 +89,8 @@ Status Operators::INL(const string& result,           // Name of the output rela
             if (s != OK) {
                 return s;
             }
+
+            // insert matching record
 
             char *data = new char[size];
 

@@ -29,7 +29,7 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     int reclen = 0;
 
-    s = grabRelationSize(result, reclen);
+    s = grabTupleSize(result, reclen);
 
     int rel1AttrCount;
     AttrDesc *attrs1;
@@ -69,6 +69,7 @@ Status Operators::Join(const string& result,           // Name of the output rel
             proj[i] = attrs1[attrMap1[const_cast<char*>(projNames[i].attrName)]];
         }
     }
+    // find the correct attrDesc for each attribute in the projection
 
     if (attrMap1.find(const_cast<char*>(attr1->attrName)) == attrMap1.end())
     {
@@ -81,7 +82,10 @@ Status Operators::Join(const string& result,           // Name of the output rel
         return ATTRNOTFOUND;
     }
     targetAttr2 = attrs2[attrMap2[const_cast<char*>(attr2->attrName)]];
+    // find the correct attrDescs for the target attributes
 
+
+    // choose correct join algorithm
     if (op != EQ)
     {
         return SNL(result, projCnt, proj, targetAttr1, op, targetAttr2, reclen);

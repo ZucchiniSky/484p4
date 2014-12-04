@@ -111,7 +111,7 @@ public:
     }
 
     // Finds the size of a tuple in the specified relation
-    static Status grabRelationSize(const string& relname, // target relation
+    static Status grabTupleSize(const string &relname, // target relation
             int &size) // size of tuple
     {
         AttrDesc *attrs;

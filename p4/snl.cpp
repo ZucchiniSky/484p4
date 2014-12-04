@@ -23,7 +23,7 @@ Status Operators::SNL(const string& result,           // Output relation name
     if (s != OK) return s;
     HeapFileScan rel2(attrDesc1.relName, s);
     if (s != OK) return s;
-    // swap AttrDesc1 and AttrDesc2 to easily reverse operator in scan
+    // outer relation is attrDesc2, inner relation is attrDesc1
 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
@@ -44,6 +44,8 @@ Status Operators::SNL(const string& result,           // Output relation name
     HeapFile resultFile(result, s);
     if (s != OK) return s;
 
+
+    // begin outer scan
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
         if (s != OK) {
@@ -52,12 +54,15 @@ Status Operators::SNL(const string& result,           // Output relation name
 
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
         if (s != OK) return s;
+        // begin inner scan
 
         while ((s = rel2.scanNext(secondRID, secondRecord)) != FILEEOF)
         {
             if (s != OK) {
                 return s;
             }
+
+            // insert matching tuple
 
             char *data = new char[size];
 

@@ -24,6 +24,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
 
     HeapFileScan *heapFile;
 
+    // choose whether to start an unfiltered scan or a filtered scan
     if (attrDesc != NULL && attrValue != NULL)
     {
         heapFile = new HeapFileScan(attrDesc->relName, attrDesc->attrOffset, attrDesc->attrLen, static_cast<Datatype>(attrDesc->attrType), static_cast<char*>(const_cast<void*>(attrValue)), op, s);
@@ -46,6 +47,7 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
     RID nextRID;
     Record nextRecord;
 
+    // start a filtered scan if applicable
     if (attrDesc != NULL)
     {
         s = heapFile->startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, (char*) attrValue, op);
@@ -61,6 +63,8 @@ Status Operators::ScanSelect(const string& result,       // Name of the output r
         {
             return s;
         }
+
+        // insert matching tuple
 
         char *data = new char[size];
 

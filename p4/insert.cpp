@@ -35,7 +35,10 @@ Status Updates::Insert(const string& relation,      // Name of the relation
     if (relAttrCount != attrCnt)
     {
         return ATTRNOTFOUND;
+        // this insert does not include every attribute, so it is invalid
     }
+
+    // insert tuple
 
     char *data = new char[size];
 
@@ -51,16 +54,19 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         if (accessed[index])
         {
             return DUPLATTR;
+            // the same attribute is set twice, this is an invalid insert
         }
         accessed[index] = true;
         AttrDesc currAttr = attrDesc[index];
         if ((Datatype) attrList[i].attrType == STRING && strlen((char*) attrList[i].attrValue) > (unsigned int) attrList[i].attrLen)
         {
             return ATTRTOOLONG;
+            // an inserted string is longer than the attrLen of the attribute
         }
         if (attrList[i].attrValue == NULL)
         {
             return ATTRNOTFOUND;
+            // an attribute inserted is null
         }
         memcpy(data + currAttr.attrOffset, attrList[i].attrValue, currAttr.attrLen);
     }
