@@ -23,10 +23,7 @@ Status Operators::SNL(const string& result,           // Output relation name
     if (s != OK) return s;
     HeapFileScan rel2(attrDesc1.relName, s);
     if (s != OK) return s;
-
     // swap AttrDesc1 and AttrDesc2 to easily reverse operator in scan
-
-    cout << "created heapfilescans" << endl;
 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
@@ -38,8 +35,6 @@ Status Operators::SNL(const string& result,           // Output relation name
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
-    cout << "parsed result" << endl;
-
     RID firstRID;
     Record firstRecord;
 
@@ -48,8 +43,6 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     HeapFile resultFile(result, s);
     if (s != OK) return s;
-
-    cout << "created result file" << endl;
 
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
