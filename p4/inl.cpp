@@ -73,10 +73,6 @@ Status Operators::INL(const string& result,           // Name of the output rela
             return s;
         }
 
-        /*char *filter;
-        s = parseFilter(attrDesc1.indexed ? attrDesc1 : attrDesc2, filter, firstRecord);
-        if (s != OK) return s;*/
-
         s = index->startScan((char*)firstRecord.data + attrDesc1.attrOffset);
         if (s != OK) return s;
 

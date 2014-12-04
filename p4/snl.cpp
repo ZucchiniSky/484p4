@@ -21,8 +21,6 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     HeapFileScan rel1(attrDesc1.relName, s);
     if (s != OK) return s;
-    HeapFileScan rel2(attrDesc2.relName, s);
-    if (s != OK) return s;
 
     cout << "created heapfilescans" << endl;
 
@@ -62,13 +60,7 @@ Status Operators::SNL(const string& result,           // Output relation name
 
         cout << "scanned first record" << endl;
 
-        /*char *filter;
-        s = parseFilter(attrDesc1, filter, firstRecord);
-        if (s != OK) return s;*/
-
-        //cout << "parsed filter" << endl;
-
-        s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
+        HeapFileScan rel2(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op, s);
         if (s != OK) return s;
 
         cout << "started scan rel2" << endl;
