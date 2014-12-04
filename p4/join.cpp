@@ -27,6 +27,8 @@ Status Operators::Join(const string& result,           // Name of the output rel
     /* Your solution goes here */
     Status s;
 
+    cout << "joining" << endl;
+
     int reclen = 0;
     for (int i = 0; i < projCnt; i++)
     {
@@ -50,8 +52,12 @@ Status Operators::Join(const string& result,           // Name of the output rel
     s = Operators::parseRelation(attr1->relName, rel1AttrCount, attrs1, attrMap1, size1);
     if (s != OK) return s;
 
+    cout << "after parse rel1" << endl;
+
     s = Operators::parseRelation(attr2->relName, rel2AttrCount, attrs2, attrMap2, size2);
     if (s != OK) return s;
+
+    cout << "after parse rel2" << endl;
 
     AttrDesc proj[projCnt];
     AttrDesc targetAttr1;
@@ -72,17 +78,23 @@ Status Operators::Join(const string& result,           // Name of the output rel
         }
     }
 
+    cout << "after parse proj" << endl;
+
     if (attrMap1.find(const_cast<char*>(attr1->attrName)) == attrMap1.end())
     {
         return ATTRNOTFOUND;
     }
     targetAttr1 = attrs1[attrMap1[const_cast<char*>(attr1->attrName)]];
 
+    cout << "after parse attr1" << endl;
+
     if (attrMap2.find(const_cast<char*>(attr2->attrName)) == attrMap2.end())
     {
         return ATTRNOTFOUND;
     }
     targetAttr2 = attrs2[attrMap2[const_cast<char*>(attr2->attrName)]];
+
+    cout << "after parse attr2" << endl;
 
     if (op != EQ)
     {
