@@ -79,7 +79,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
             return s;
         }
 
-        s = index->startScan((char*)firstRecord.data + (indexedOnOne ? attrDesc1.attrOffset : attrDesc2.attrOffset));
+        s = index->startScan((char*)firstRecord.data + (indexedOnOne ? attrDesc2.attrOffset : attrDesc1.attrOffset));
         if (s != OK) return s;
         // begin index scan filtered by the current outer record
 
