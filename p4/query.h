@@ -109,6 +109,9 @@ public:
     static Status grabRelationSize(const string& relname, // target relation
             int &size) // size of tuple
     {
+        AttrDesc *attrs;
+        int attrCount;
+        
         Status status = attrCat->getRelInfo(relname, attrCount, attrs);
         if (status != OK) return status;
 
