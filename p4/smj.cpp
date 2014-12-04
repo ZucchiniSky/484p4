@@ -135,6 +135,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
     }
 
+    delete resultAttrDesc;
+
     return OK;
 }
 

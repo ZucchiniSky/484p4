@@ -97,6 +97,8 @@ Status Operators::SNL(const string& result,           // Output relation name
     s = rel1.endScan();
     if (s != OK) return s;
 
+    delete resultAttrDesc;
+
     return OK;
 }
 
