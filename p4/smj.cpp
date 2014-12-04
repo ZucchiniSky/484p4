@@ -81,6 +81,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
     Record firstRecord, secondRecord;
 
+    bool first = true;
+
     HeapFile resultFile(result, s);
     if (s != OK) return s;
 
@@ -94,10 +96,17 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
         cout << "scanning first record" << endl;
 
-        s = rel2.gotoMark();
+        if (!first)
+        {
+            s = rel2.gotoMark();
+        }
         if (s != OK) return s;
         s = rel2.next(secondRecord);
-        if (s == FILEEOF) continue;
+        if (s == FILEEOF)
+        {
+            cout << "FILEEOF" << endl;
+            continue;
+        }
         else if (s != OK) return s;
 
         cout << "scanning second record" << endl;
@@ -155,6 +164,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
             s = rel2.setMark();
             if (s != OK) return s;
         }
+
+        first = false;
 
     }
 
