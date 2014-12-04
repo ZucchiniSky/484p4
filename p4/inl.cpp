@@ -103,10 +103,10 @@ Status Operators::INL(const string& result,           // Name of the output rela
                 AttrDesc currAttr = resultAttrDesc[i];
                 if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
                 {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(!indexedOnOne ? firstRecord.data : secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 } else
                 {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(indexedOnOne ? firstRecord.data : secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 }
             }
 
