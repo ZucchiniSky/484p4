@@ -101,7 +101,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
             for (int i = 0; i < projCnt; i++)
             {
                 AttrDesc currAttr = resultAttrDesc[i];
-                if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
+                if (strcmp(attrDescArray[i].relName, (indexedOnOne ? attrDesc2.relName : attrDesc1.relName)))
                 {
                     cout << "ONE!!!!" << endl;
                     memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);

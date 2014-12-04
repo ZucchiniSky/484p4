@@ -57,16 +57,15 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     for (int i = 0; i < projCnt; i++)
     {
-        if (attrMap1.find(const_cast<char*>(projNames[i].attrName)) == attrMap1.end())
+        if (projNames[i].relName == attr1->relName && attrMap1.find(const_cast<char*>(projNames[i].attrName)) != attrMap1.end())
         {
-            if (attrMap2.find(const_cast<char*>(projNames[i].attrName)) == attrMap2.end())
-            {
-                return ATTRNOTFOUND;
-            }
+            proj[i] = attrs1[attrMap1[const_cast<char*>(projNames[i].attrName)]];
+        } else if (projNames[i].relName == attr2->relName &&  attrMap2.find(const_cast<char*>(projNames[i].attrName)) != attrMap2.end())
+        {
             proj[i] = attrs2[attrMap2[const_cast<char*>(projNames[i].attrName)]];
         } else
         {
-            proj[i] = attrs1[attrMap1[const_cast<char*>(projNames[i].attrName)]];
+            return ATTRNOTFOUND;
         }
     }
     // find the correct attrDesc for each attribute in the projection
