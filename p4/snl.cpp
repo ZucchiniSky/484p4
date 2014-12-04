@@ -19,9 +19,9 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     Status s;
 
-    HeapFileScan rel1(attrDesc1.attrName, s);
+    HeapFileScan rel1(attrDesc1.relName, s);
     if (s != OK) return s;
-    HeapFileScan rel2(attrDesc2.attrName, s);
+    HeapFileScan rel2(attrDesc2.relName, s);
     if (s != OK) return s;
 
     cout << "created heapfilescans" << endl;
@@ -114,6 +114,8 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     s = rel1.endScan();
     if (s != OK) return s;
+
+    cout << "ended scan rel1" << endl;
 
     return OK;
 }

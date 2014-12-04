@@ -29,9 +29,9 @@ Status Operators::SMJ(const string& result,           // Output relation name
     int attr1Count, attr2Count;
     AttrDesc *attrs1, *attrs2;
 
-    s = attrCat->getRelInfo(attrDesc1.attrName, attr1Count, attrs1);
+    s = attrCat->getRelInfo(attrDesc1.relName, attr1Count, attrs1);
     if (s != OK) return s;
-    s = attrCat->getRelInfo(attrDesc2.attrName, attr2Count, attrs2);
+    s = attrCat->getRelInfo(attrDesc2.relName, attr2Count, attrs2);
     if (s != OK) return s;
 
     int size1 = 0, size2 = 0;
