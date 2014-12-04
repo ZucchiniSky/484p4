@@ -108,8 +108,6 @@ Status Operators::SNL(const string& result,           // Output relation name
 
         cout << "ended scan rel2" << endl;
 
-        delete filter;
-
     }
 
     s = rel1.endScan();
