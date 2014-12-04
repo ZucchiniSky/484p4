@@ -22,9 +22,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
     Status s;
 
-    int maxPages = bufMgr->numUnpinnedPages() * 4 / 5;
-
-    int availableMemory = maxPages * PAGESIZE;
+    int availableMemory = bufMgr->numUnpinnedPages() * 4 * PAGESIZE / 5;
 
     int attr1Count, attr2Count;
     AttrDesc *attrs1, *attrs2;
@@ -33,6 +31,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
     if (s != OK) return s;
     s = attrCat->getRelInfo(attrDesc2.relName, attr2Count, attrs2);
     if (s != OK) return s;
+
+    cout << "get rel info" << endl;
 
     int size1 = 0, size2 = 0;
 
@@ -46,6 +46,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
         }
     }
 
+    cout << "size 1 is " << size1 << endl;
+
     for (int i = 0; i < attr2Count; i++)
     {
         AttrDesc *currAttr = attrs2 + i;
@@ -55,6 +57,8 @@ Status Operators::SMJ(const string& result,           // Output relation name
             size2 = currSize;
         }
     }
+
+    cout << "size 2 is " << size2 << endl;
 
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
@@ -66,15 +70,21 @@ Status Operators::SMJ(const string& result,           // Output relation name
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
+    cout << "parsed relation" << endl;
+
     SortedFile rel1(attrDesc1.relName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), availableMemory / size1, s);
     if (s != OK) return s;
     SortedFile rel2(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), availableMemory / size2, s);
     if (s != OK) return s;
 
+    cout << "sortedfile declared" << endl;
+
     Record firstRecord, secondRecord;
 
     HeapFile resultFile(result, s);
     if (s != OK) return s;
+
+    cout << "created result file" << endl;
 
     while ((s = rel1.next(firstRecord)) != FILEEOF)
     {
@@ -82,44 +92,56 @@ Status Operators::SMJ(const string& result,           // Output relation name
             return s;
         }
 
+        cout << "scanning first record" << endl;
+
         s = rel2.gotoMark();
         if (s != OK) return s;
         s = rel2.next(secondRecord);
-        if (s == FILEEOF) break;
+        if (s == FILEEOF) continue;
         else if (s != OK) return s;
+
+        cout << "scanning second record" << endl;
 
         bool found = false;
         int match;
 
+        cout << "first match is " << matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2) << endl;
+
         while ((match = matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2)) <= 0)
         {
-            if (!found && match == 0)
+            cout << "match is " << match << endl;
+
+            if (match == 0)
             {
-                found = true;
-                s = rel2.setMark();
+                if (!found)
+                {
+                    found = true;
+                    s = rel2.setMark();
+                    cout << "first match" << endl;
+                    if (s != OK) return s;
+                }
+
+                char *data = new char[size];
+
+                for (int i = 0; i < projCnt; i++)
+                {
+                    AttrDesc currAttr = resultAttrDesc[i];
+                    if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
+                    {
+                        memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                    } else
+                    {
+                        memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                    }
+                }
+
+                Record record;
+                record.data = data;
+                record.length = size;
+                RID rid;
+                s = resultFile.insertRecord(record, rid);
                 if (s != OK) return s;
             }
-
-            char *data = new char[size];
-
-            for (int i = 0; i < projCnt; i++)
-            {
-                AttrDesc currAttr = resultAttrDesc[i];
-                if (strcmp(attrDescArray[i].relName, attrDesc1.relName))
-                {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
-                } else
-                {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
-                }
-            }
-
-            Record record;
-            record.data = data;
-            record.length = size;
-            RID rid;
-            s = resultFile.insertRecord(record, rid);
-            if (s != OK) return s;
             s = rel2.next(secondRecord);
             if (s == FILEEOF)
             {
@@ -129,6 +151,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
         if (!found)
         {
+            cout << "never found a match" << endl;
             s = rel2.setMark();
             if (s != OK) return s;
         }
