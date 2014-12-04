@@ -106,7 +106,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
                     memcpy(data + currAttr.attrOffset, static_cast<char*>(indexedOnOne ? firstRecord.data : secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 } else
                 {
-                    memcpy(data + currAttr.attrOffset, static_cast<char*>(indexedOnOne ? firstRecord.data : secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
+                    memcpy(data + currAttr.attrOffset, static_cast<char*>(!indexedOnOne ? firstRecord.data : secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 }
             }
 
