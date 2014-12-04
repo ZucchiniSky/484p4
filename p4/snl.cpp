@@ -85,8 +85,6 @@ Status Operators::SNL(const string& result,           // Output relation name
             RID rid;
             s = resultFile.insertRecord(record, rid);
             if (s != OK) return s;
-
-            delete data;
         }
 
         s = rel2.endScan();

@@ -125,8 +125,6 @@ Status Operators::SMJ(const string& result,           // Output relation name
             {
                 break;
             } else if (s != OK) return s;
-
-            delete data;
         }
 
         if (!found)
