@@ -62,13 +62,13 @@ Status Operators::SNL(const string& result,           // Output relation name
 
         cout << "scanned first record" << endl;
 
-        char *filter;
+        /*char *filter;
         s = parseFilter(attrDesc1, filter, firstRecord);
-        if (s != OK) return s;
+        if (s != OK) return s;*/
 
-        cout << "parsed filter" << endl;
+        //cout << "parsed filter" << endl;
 
-        s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), filter, op);
+        s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
         if (s != OK) return s;
 
         cout << "started scan rel2" << endl;
