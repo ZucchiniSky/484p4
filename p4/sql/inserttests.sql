@@ -8,7 +8,7 @@ INSERT INTO inserto (b, c, a) values (3.14, 'a', 5);
 INSERT INTO inserto (b, a, c) values (3.14, 5, 'a');
 INSERT INTO inserto (c, a, b) values ('a', 5, 3.14);
 INSERT INTO inserto (c, b, a) values ('a', 3.14, 5);
-INSERT INTO inserto (a, a) values (5, 5, 5);
+INSERT INTO inserto (a, a, a) values (5, 5, 5);
 
 SELECT * FROM inserto;
 
