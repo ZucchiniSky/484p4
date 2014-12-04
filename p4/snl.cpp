@@ -19,10 +19,12 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     Status s;
 
-    HeapFileScan rel2(attrDesc1.relName, s);
-    if (s != OK) return s;
     HeapFileScan rel1(attrDesc2.relName, s);
     if (s != OK) return s;
+    HeapFileScan rel2(attrDesc1.relName, s);
+    if (s != OK) return s;
+
+    // swap AttrDesc1 and AttrDesc2 to easily reverse operator in scan
 
     cout << "created heapfilescans" << endl;
 
@@ -49,28 +51,20 @@ Status Operators::SNL(const string& result,           // Output relation name
 
     cout << "created result file" << endl;
 
-    int scanned1 = 0, scanned2 = 0;
-
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
         if (s != OK) {
             return s;
         }
 
-        scanned1++;
-
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
         if (s != OK) return s;
-
-        scanned2 = 0;
 
         while ((s = rel2.scanNext(secondRID, secondRecord)) != FILEEOF)
         {
             if (s != OK) {
                 return s;
             }
-
-            scanned2++;
 
             char *data = new char[size];
 
