@@ -31,17 +31,17 @@ Status Operators::INL(const string& result,           // Name of the output rela
     {
         index = new Index(attrDesc1.relName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), 0, s);
         if (s != OK) return s;
-        indexHeapFile = new HeapFileScan(attrDesc1.attrName, s);
+        indexHeapFile = new HeapFileScan(attrDesc1.relName, s);
         if (s != OK) return s;
-        heapFile = new HeapFileScan(attrDesc2.attrName, s);
+        heapFile = new HeapFileScan(attrDesc2.relName, s);
         if (s != OK) return s;
     } else
     {
         index = new Index(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), 0, s);
         if (s != OK) return s;
-        indexHeapFile = new HeapFileScan(attrDesc2.attrName, s);
+        indexHeapFile = new HeapFileScan(attrDesc2.relName, s);
         if (s != OK) return s;
-        heapFile = new HeapFileScan(attrDesc1.attrName, s);
+        heapFile = new HeapFileScan(attrDesc1.relName, s);
         if (s != OK) return s;
     }
 
