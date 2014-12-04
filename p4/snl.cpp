@@ -44,9 +44,6 @@ Status Operators::SNL(const string& result,           // Output relation name
     RID secondRID;
     Record secondRecord;
 
-    s = rel1.startScan(0, 0, INTEGER, NULL, NOTSET);
-    if (s != OK) return s;
-
     cout << "start scan rel1" << endl;
 
     HeapFile resultFile(result, s);
