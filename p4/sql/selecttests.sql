@@ -11,4 +11,4 @@ SELECT first.a FROM first WHERE first.a < 3;
 SELECT first.a FROM first WHERE first.a >= 3;
 SELECT first.a FROM first WHERE first.a <= 3;
 
-DROP TABLE table;
+DROP TABLE first;
