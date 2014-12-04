@@ -24,6 +24,8 @@ Status Operators::SNL(const string& result,           // Output relation name
     HeapFileScan rel2(attrDesc2.attrName, s);
     if (s != OK) return s;
 
+    cout << "created heapfilescans" << endl;
+
     int resultAttrCount;
     AttrDesc *resultAttrDesc;
 
@@ -34,6 +36,8 @@ Status Operators::SNL(const string& result,           // Output relation name
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
+    cout << "parsed result" << endl;
+
     RID firstRID;
     Record firstRecord;
 
@@ -43,8 +47,12 @@ Status Operators::SNL(const string& result,           // Output relation name
     s = rel1.startScan(0, 0, INTEGER, NULL, NOTSET);
     if (s != OK) return s;
 
+    cout << "start scan rel1" << endl;
+
     HeapFile resultFile(result, s);
     if (s != OK) return s;
+
+    cout << "created result file" << endl;
 
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
@@ -52,18 +60,26 @@ Status Operators::SNL(const string& result,           // Output relation name
             return s;
         }
 
+        cout << "scanned first record" << endl;
+
         char *filter;
         s = parseFilter(attrDesc1, filter, firstRecord);
         if (s != OK) return s;
 
+        cout << "parsed filter = " << filter << endl;
+
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), filter, op);
         if (s != OK) return s;
+
+        cout << "started scan rel2" << endl;
 
         while ((s = rel2.scanNext(secondRID, secondRecord)) != FILEEOF)
         {
             if (s != OK) {
                 return s;
             }
+
+            cout << "scanned second record" << endl;
 
             char *data = new char[size];
 
@@ -89,6 +105,8 @@ Status Operators::SNL(const string& result,           // Output relation name
 
         s = rel2.endScan();
         if (s != OK) return s;
+
+        cout << "ended scan rel2" << endl;
 
         delete filter;
 
