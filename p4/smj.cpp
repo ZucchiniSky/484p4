@@ -66,9 +66,9 @@ Status Operators::SMJ(const string& result,           // Output relation name
     s = parseRelation(result, resultAttrCount, resultAttrDesc, attrMap, size);
     if (s != OK) return s;
 
-    SortedFile rel1(attrDesc1.attrName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), availableMemory / size1, s);
+    SortedFile rel1(attrDesc1.relName, attrDesc1.attrOffset, attrDesc1.attrLen, static_cast<Datatype>(attrDesc1.attrType), availableMemory / size1, s);
     if (s != OK) return s;
-    SortedFile rel2(attrDesc2.attrName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), availableMemory / size2, s);
+    SortedFile rel2(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), availableMemory / size2, s);
     if (s != OK) return s;
 
     Record firstRecord, secondRecord;
