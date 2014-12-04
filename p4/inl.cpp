@@ -103,11 +103,9 @@ Status Operators::INL(const string& result,           // Name of the output rela
                 AttrDesc currAttr = resultAttrDesc[i];
                 if (strcmp(attrDescArray[i].relName, (!indexedOnOne ? attrDesc2.relName : attrDesc1.relName)))
                 {
-                    cout << "ONE!!!!" << endl;
                     memcpy(data + currAttr.attrOffset, static_cast<char*>(firstRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 } else
                 {
-                    cout << "TWO!!!!" << endl;
                     memcpy(data + currAttr.attrOffset, static_cast<char*>(secondRecord.data) + attrDescArray[i].attrOffset, currAttr.attrLen);
                 }
             }
