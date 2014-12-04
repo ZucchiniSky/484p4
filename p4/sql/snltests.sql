@@ -10,7 +10,6 @@ INSERT INTO second (b) values (6);
 
 SELECT first.a, second.b FROM first, second WHERE first.a < second.b;
 SELECT first.a, second.b FROM first, second WHERE first.a > second.b;
-SELECT first.a, second.b FROM first, second WHERE first.a != second.b;
 
 DROP TABLE first;
 DROP TABLE second;
