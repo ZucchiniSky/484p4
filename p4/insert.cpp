@@ -39,9 +39,17 @@ Status Updates::Insert(const string& relation,      // Name of the relation
 
     char *data = new char[size];
 
+    bool *accessed = new bool[attrCnt];
+
     for (int i = 0; i < attrCnt; i++)
     {
-        AttrDesc currAttr = attrDesc[attrMap[const_cast<char*>(attrList[i].attrName)]];
+        int index = attrMap[const_cast<char*>(attrList[i].attrName)];
+        if (accessed[index])
+        {
+            return DUPLATTR;
+        }
+        accessed[index] = true;
+        AttrDesc currAttr = attrDesc[index];
         if ((Datatype) attrList[i].attrType == STRING && strlen((char*) attrList[i].attrValue) > (unsigned int) attrList[i].attrLen)
         {
             return ATTRTOOLONG;
