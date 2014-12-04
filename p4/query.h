@@ -123,7 +123,6 @@ public:
                 memcpy(&filter, (char *) record.data + desc.attrOffset, desc.attrLen);
                 break;
         }
-        cout << "filter is " << filter << endl;
         return OK;
     }
 

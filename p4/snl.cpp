@@ -66,7 +66,7 @@ Status Operators::SNL(const string& result,           // Output relation name
         s = parseFilter(attrDesc1, filter, firstRecord);
         if (s != OK) return s;
 
-        cout << "parsed filter = " << filter << endl;
+        cout << "parsed filter" << endl;
 
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), filter, op);
         if (s != OK) return s;
