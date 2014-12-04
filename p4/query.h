@@ -106,23 +106,24 @@ public:
         return OK;
     }
 
-    static Status parseFilter(AttrDesc desc, char *&filter, Record record)
+    static Status grabRelationSize(const string& relname, // target relation
+            int &size) // size of tuple
     {
-        switch(desc.attrType)
+        Status status = attrCat->getRelInfo(relname, attrCount, attrs);
+        if (status != OK) return status;
+
+        size = 0;
+
+        for (int i = 0; i < attrCount; i++)
         {
-            case INTEGER:
-                filter = new char[sizeof(int)];
-                memcpy(&filter, (char *) record.data + desc.attrOffset, sizeof(int));
-                break;
-            case DOUBLE:
-                filter = new char[sizeof(double)];
-                memcpy(&filter, (char *) record.data + desc.attrOffset, sizeof(double));
-                break;
-            case STRING:
-                filter = new char[desc.attrLen];
-                memcpy(&filter, (char *) record.data + desc.attrOffset, desc.attrLen);
-                break;
+            AttrDesc *currAttr = attrs + i;
+            int currSize = currAttr->attrOffset + currAttr->attrLen;
+            if (currSize > size)
+            {
+                size = currSize;
+            }
         }
+
         return OK;
     }
 

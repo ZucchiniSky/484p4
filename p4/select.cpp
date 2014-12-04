@@ -21,10 +21,8 @@ Status Operators::Select(const string & result,      // name of the output relat
     Status s;
 
     int reclen = 0;
-    for (int i = 0; i < projCnt; i++)
-    {
-        reclen += projNames[i].attrLen;
-    }
+
+    s = grabRelationSize(result, reclen);
 
     int relAttrCount;
     AttrDesc *attrs;
