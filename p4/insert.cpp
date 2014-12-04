@@ -64,7 +64,5 @@ Status Updates::Insert(const string& relation,      // Name of the relation
         if (s != OK) return s;
     }
 
-    delete attrDesc;
-
     return OK;
 }

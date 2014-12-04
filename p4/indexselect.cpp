@@ -72,8 +72,6 @@ Status Operators::IndexSelect(const string& result,       // Name of the output 
     s = fromFile.endScan();
     if (s != OK) return s;
 
-    delete resultAttrDesc;
-
     return OK;
 }
 

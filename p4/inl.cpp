@@ -125,7 +125,6 @@ Status Operators::INL(const string& result,           // Name of the output rela
     delete index;
     delete indexHeapFile;
     delete heapFile;
-    delete resultAttrDesc;
 
     return OK;
 }
