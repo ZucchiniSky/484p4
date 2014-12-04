@@ -14,9 +14,9 @@ INSERT INTO first (a, b) values (4, 3);
 SELECT * FROM first;
 SELECT second.a, second.b FROM second;
 
-SELECT first.a, first.b, second.b FROM first, second WHERE first.a = second.a;
+SELECT first.a, first.b, second.a, second.b FROM first, second WHERE first.a = second.a;
 
-SELECT first.a, second.a, first.b FROM first, second WHERE first.b = second.b;
+SELECT first.a, first.b, second.a, second.b FROM first, second WHERE first.b = second.b;
 
 DROP TABLE first;
 DROP TABLE second;
