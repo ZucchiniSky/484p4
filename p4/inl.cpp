@@ -115,8 +115,6 @@ Status Operators::INL(const string& result,           // Name of the output rela
 
         s = index->endScan();
         if (s != OK) return s;
-
-        delete filter;
     }
 
     s = heapFile->endScan();
