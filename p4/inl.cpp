@@ -27,6 +27,8 @@ Status Operators::INL(const string& result,           // Name of the output rela
     HeapFileScan *heapFile;
     HeapFileScan *indexHeapFile;
 
+    bool indexedOnOne;
+
     // choose correct indexed attribute
     if (attrDesc1.indexed)
     {
@@ -36,6 +38,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
         if (s != OK) return s;
         heapFile = new HeapFileScan(attrDesc2.relName, s);
         if (s != OK) return s;
+        indexedOnOne = true;
     } else
     {
         index = new Index(attrDesc2.relName, attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), 0, s);
@@ -44,6 +47,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
         if (s != OK) return s;
         heapFile = new HeapFileScan(attrDesc1.relName, s);
         if (s != OK) return s;
+        indexedOnOne = false;
     }
 
     int resultAttrCount;
@@ -75,7 +79,7 @@ Status Operators::INL(const string& result,           // Name of the output rela
             return s;
         }
 
-        s = index->startScan((char*)firstRecord.data + attrDesc1.attrOffset);
+        s = index->startScan((char*)firstRecord.data + (indexedOnOne ? attrDesc1.attrOffset : attrDesc2.attrOffset));
         if (s != OK) return s;
         // begin index scan filtered by the current outer record
 
