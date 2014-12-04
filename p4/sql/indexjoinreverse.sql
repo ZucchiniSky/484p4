@@ -12,7 +12,7 @@ INSERT INTO second (a, b) values (4, 3);
 INSERT INTO first (a, b) values (4, 3);
 
 SELECT * FROM first;
-SELECT * FROM second;
+SELECT second.a, second.b FROM second;
 
 SELECT first.a, first.b, second.b FROM first, second WHERE first.a = second.a;
 
