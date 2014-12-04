@@ -116,7 +116,7 @@ Status Operators::SMJ(const string& result,           // Output relation name
 
         cout << "first match is " << matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2) << endl;
 
-        while ((match = matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2)) <= 0)
+        while ((match = matchRec(firstRecord, secondRecord, attrDesc1, attrDesc2)) >= 0)
         {
             cout << "match is " << match << endl;
 
