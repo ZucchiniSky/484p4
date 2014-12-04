@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <string.h>
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define DOUBLEERROR 1e-07
@@ -57,10 +58,10 @@ Status Operators::Join(const string& result,           // Name of the output rel
 
     for (int i = 0; i < projCnt; i++)
     {
-        if (projNames[i].relName == attr1->relName && attrMap1.find(const_cast<char*>(projNames[i].attrName)) != attrMap1.end())
+        if (!strcmp(projNames[i].relName, attr1->relName) && attrMap1.find(const_cast<char*>(projNames[i].attrName)) != attrMap1.end())
         {
             proj[i] = attrs1[attrMap1[const_cast<char*>(projNames[i].attrName)]];
-        } else if (projNames[i].relName == attr2->relName &&  attrMap2.find(const_cast<char*>(projNames[i].attrName)) != attrMap2.end())
+        } else if (!strcmp(projNames[i].relName, attr2->relName) && attrMap2.find(const_cast<char*>(projNames[i].attrName)) != attrMap2.end())
         {
             proj[i] = attrs2[attrMap2[const_cast<char*>(projNames[i].attrName)]];
         } else
