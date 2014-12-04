@@ -44,12 +44,12 @@ Status Operators::SNL(const string& result,           // Output relation name
     RID secondRID;
     Record secondRecord;
 
-    cout << "start scan rel1" << endl;
-
     HeapFile resultFile(result, s);
     if (s != OK) return s;
 
     cout << "created result file" << endl;
+
+    int scanned1 = 0, scanned2 = 0;
 
     while ((s = rel1.scanNext(firstRID, firstRecord)) != FILEEOF)
     {
@@ -57,16 +57,18 @@ Status Operators::SNL(const string& result,           // Output relation name
             return s;
         }
 
+        scanned1++;
+
         s = rel2.startScan(attrDesc2.attrOffset, attrDesc2.attrLen, static_cast<Datatype>(attrDesc2.attrType), (char*)firstRecord.data + attrDesc1.attrOffset, op);
         if (s != OK) return s;
-
-        cout << "started scan rel2" << endl;
 
         while ((s = rel2.scanNext(secondRID, secondRecord)) != FILEEOF)
         {
             if (s != OK) {
                 return s;
             }
+
+            scanned2++;
 
             char *data = new char[size];
 
@@ -90,15 +92,19 @@ Status Operators::SNL(const string& result,           // Output relation name
             if (s != OK) return s;
         }
 
+        cout << "scanned2 =\t" << scanned2 << endl;
+        cout << "actual2 =\t" << rel2.getRecCnt();
+
         s = rel2.endScan();
         if (s != OK) return s;
 
     }
+    
+    cout << "scanned1 =\t" << scanned1 << endl;
+    cout << "actual1 =\t" << rel1.getRecCnt();
 
     s = rel1.endScan();
     if (s != OK) return s;
-
-    cout << "ended scan rel1" << endl;
 
     return OK;
 }
